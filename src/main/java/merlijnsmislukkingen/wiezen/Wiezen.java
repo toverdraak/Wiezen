@@ -39,6 +39,7 @@ public class Wiezen extends Application {
     private boolean splrvraagt;
     public int spelersgevraagd;
     Font buttonfont = new Font(20);
+    private boolean actie;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -58,9 +59,9 @@ public class Wiezen extends Application {
         Collections.sort(splr3);
         Collections.sort(splr4);
 
-        Bot bot1 = new Bot();
-        Bot bot2 = new Bot();
-        Bot bot3 = new Bot();
+        Bot bot1 = new Bot("bot1");
+        Bot bot2 = new Bot("bot2");
+        Bot bot3 = new Bot("bot3");
         bot1.setList(splr2);
         bot2.setList(splr3);
         bot3.setList(splr4);
@@ -71,6 +72,10 @@ public class Wiezen extends Application {
         double overlap = 55;             // Hoeveel kaarten overlappen
         double startX = 500;             // Beginpositie X
         double y = 20;
+        
+        Group midden = new Group();
+        double mstartX = 0;
+        double mstartY = 0;
 
         Group buttons = new Group();
         double bstartX = 200;
@@ -91,7 +96,7 @@ public class Wiezen extends Application {
         pas.setPrefHeight(70);
         pas.setPrefWidth(150);
         buttons.getChildren().add(pas);
-        int midden = splr1.size() / 2;
+        int middenvan = splr1.size() / 2;
 
         for (int i = 0; i < splr1.size(); i++) {
             Kaarten kaart = splr1.get(i);
@@ -103,7 +108,7 @@ public class Wiezen extends Application {
             ImageView kaartView = new ImageView(image);
             double angle = startAngle + i * angleIncrement;
             double x = startX + i * overlap;
-            double offsetY = y + Math.pow(i - midden, 2) * 0.8;
+            double offsetY = y + Math.pow(i - middenvan, 2) * 0.8;
 
             kaartView.setLayoutX(x);
             kaartView.setLayoutY(offsetY);
@@ -116,6 +121,7 @@ public class Wiezen extends Application {
         ImageView kaartView = new ImageView(image);
 
         pas.setOnAction(e -> {
+            actie = true;
             splrvraagt = false;
             List<Bot> vragers = new ArrayList<>();
             vraag.setDisable(true);
@@ -142,9 +148,11 @@ public class Wiezen extends Application {
                 
             }
             System.out.println(spelersgevraagd);
-            Round round1 = new Round(handView, splr1, kaartView);
+            Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie);
+            Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3);
         });
         vraag.setOnAction(e -> {
+            actie = false;
             splrvraagt = true;
             spelersgevraagd++;
             vraag.setDisable(true);
@@ -154,35 +162,35 @@ public class Wiezen extends Application {
             if (splr1vraag == true) {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
-                Team passers = new Team(bot3, bot2);
+                Team passers = new Team(bot3, bot2, actie);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
                 if (splr2vraag == true) {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot3, bot1);
+                    Team passers = new Team(bot3, bot1,actie);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot1, bot2);
+                    Team passers = new Team(bot1, bot2,actie);
                 }
             }
             System.out.println(spelersgevraagd);
-            Round round1 = new Round(handView, splr1, kaartView);
+            Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3);
         });
         
         
         
         
         
-        
+        midden.getChildren().add(kaartView);
         BorderPane onderkant = new BorderPane(handView);
         onderkant.setMinHeight(200);
         kaarten.setBottom(onderkant);
-        kaarten.setCenter(kaartView);
+        kaarten.setCenter(midden);
         kaarten.setTop(buttons);
         kaarten.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
         Scene kaarttafel = new Scene(kaarten, 1500, 900, Color.GREEN);

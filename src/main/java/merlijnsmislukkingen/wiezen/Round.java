@@ -15,7 +15,8 @@ import javafx.scene.image.ImageView;
  * @author merlijn
  */
 public class Round {
-    public Round(Group handView, List<Kaarten> spelersKaarten, ImageView midden) {
+    public static Kaarten gekozenKaart;
+    public Round(Group handView, List<Kaarten> spelersKaarten, ImageView mid, Group midden, Bot bot1, Bot bot2, Bot bot3) {
         for (Node node : handView.getChildren()) {
             if (node instanceof ImageView) {
                 ImageView kaartView = (ImageView) node;
@@ -26,7 +27,8 @@ public class Round {
                         Kaarten gekozenKaart = spelersKaarten.get(index);
                         String imagePath = "/" + gekozenKaart.getSoort() + gekozenKaart.getNummer() + ".png";
                         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
-                        midden.setImage(gekozenImage);
+                        mid.setImage(gekozenImage);
+                        midden.getChildren().add(mid);
                         handView.getChildren().remove(kaartView);
                         spelersKaarten.remove(gekozenKaart);
                         // ❌ Disable alle kaarten
@@ -38,5 +40,8 @@ public class Round {
             }
         }
     
+    }
+    public static Kaarten getGekozenKaart() {
+        return gekozenKaart;
     }
 }

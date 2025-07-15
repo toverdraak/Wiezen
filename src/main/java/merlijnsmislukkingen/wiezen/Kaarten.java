@@ -79,6 +79,7 @@ public class Kaarten implements Comparable<Kaarten>  {
         if (thisSoortIndex != otherSoortIndex) {
             return Integer.compare(thisSoortIndex, otherSoortIndex);
         }
+
         return Integer.compare(this.nummer, other.nummer);
     }
 }

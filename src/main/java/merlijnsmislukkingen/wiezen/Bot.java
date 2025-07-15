@@ -6,6 +6,10 @@ package merlijnsmislukkingen.wiezen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -18,7 +22,15 @@ public class Bot {
     int aas = 0;
     int troefamount = 0;
     int troefboven10 = 0;
+    int opties = 0;
+    private List<Kaarten> optiekaarten = new ArrayList<>();
+    int welkkaart;
+    Kaarten gelegdeKaart;
+    private String name;
 
+    public Bot(String naam) {
+        name = naam;
+    }
     public void setList(List cards) {
         splrdeck = cards;
     }
@@ -26,6 +38,9 @@ public class Bot {
     public static void setTroef(String troef) {
         System.out.println(troef);
         detroef = troef;
+    }
+    public String getName() {
+        return name;
     }
 
     public boolean getActie() {
@@ -55,5 +70,37 @@ public class Bot {
             }
         }
         return false;
+    }
+    public void legKaart(ImageView mid, Group midden) {
+        System.out.println(splrdeck);
+        Kaarten eersteKaart = Round.getGekozenKaart();
+        eersteKaart.getSoort();
+        for (int i=0; i<splrdeck.size();i++){
+            Kaarten kaart = splrdeck.get(i);
+            if (kaart.getSoort() == eersteKaart.getSoort()){
+                opties++;
+                optiekaarten.add(kaart);
+                splrdeck.remove(i);
+            }
+        }
+        if (opties > 0) {
+            Random welkekaart = new Random();
+            welkkaart = welkekaart.nextInt(opties);
+            opties = 0;
+            gelegdeKaart = optiekaarten.get(welkkaart);
+            optiekaarten.remove(welkkaart);
+            splrdeck.addAll(optiekaarten);
+        } else {
+            Random welkekaart = new Random();
+            welkkaart = welkekaart.nextInt(splrdeck.size());
+            gelegdeKaart =splrdeck.get(welkkaart);
+            splrdeck.remove(welkkaart);
+            
+        }
+        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
+        Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
+        mid.setImage(gekozenImage);
+        midden.getChildren().add(mid);
+        System.out.println(splrdeck);
     }
 }
