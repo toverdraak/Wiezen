@@ -38,7 +38,6 @@ public class Kaarten implements Comparable<Kaarten>  {
     }
     
     public int getNummer() {
-        System.out.println(this.nummer);
         return this.nummer;    
     }
     
@@ -64,7 +63,6 @@ public class Kaarten implements Comparable<Kaarten>  {
         }
         if (troef.equals("harten") || troef.equals("ruiten")) {
             SOORT_VOLGORDE.remove(troef);
-            System.out.println(SOORT_VOLGORDE);
         } else {
             SOORT_VOLGORDE.removeAll(SOORT_VOLGORDE);
             SOORT_VOLGORDE.add("harten");
