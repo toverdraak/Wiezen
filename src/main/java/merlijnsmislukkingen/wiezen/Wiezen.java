@@ -124,6 +124,7 @@ public class Wiezen extends Application {
             actie = true;
             splrvraagt = false;
             List<Bot> vragers = new ArrayList<>();
+            List<Bot> passer = new ArrayList<>();
             vraag.setDisable(true);
             pas.setDisable(true);
             boolean splr1vraag = bot1.getActie();
@@ -131,6 +132,8 @@ public class Wiezen extends Application {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
                 vragers.add(bot1);
+            } else {
+                passer.add(bot1);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
@@ -138,17 +141,21 @@ public class Wiezen extends Application {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
                     vragers.add(bot2);
+                } else {
+                    passer.add(bot2);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
                     vragers.add(bot3);
+                } else{
+                    passer.add(bot3);
                 }
                 
             }
             System.out.println(spelersgevraagd);
-            Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie);
+            Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie, passer.get(0));
             Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3);
         });
         vraag.setOnAction(e -> {
@@ -162,20 +169,20 @@ public class Wiezen extends Application {
             if (splr1vraag == true) {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
-                Team passers = new Team(bot3, bot2, actie);
+                Team passers = new Team(bot3, bot2, actie, bot1);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
                 if (splr2vraag == true) {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot3, bot1,actie);
+                    Team passers = new Team(bot3, bot1,actie, bot2);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot1, bot2,actie);
+                    Team passers = new Team(bot1, bot2,actie, bot3);
                 }
             }
             System.out.println(spelersgevraagd);

@@ -5,6 +5,7 @@
 package merlijnsmislukkingen.wiezen;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class Kaarten implements Comparable<Kaarten>  {
     private String soort;
     private int nummer;
     private static String troef;
+    private static String uitgekomen;
 
     private static List<String> SOORT_VOLGORDE = new ArrayList();
  
@@ -47,6 +49,12 @@ public class Kaarten implements Comparable<Kaarten>  {
 
     boolean isTroef() {
         return (this.soort.equals(troef));
+    }
+    public static void setUitgekomenSoort(String soort) {
+        uitgekomen = soort;
+    }
+    boolean isUitgekomenSoort() {
+        return (this.soort.equals(uitgekomen));
     }
 
     @Override
@@ -82,4 +90,35 @@ public class Kaarten implements Comparable<Kaarten>  {
 
         return Integer.compare(this.nummer, other.nummer);
     }
+    public static Comparator<Kaarten> SlagComparator = new Comparator<Kaarten>() {
+        @Override
+        public int compare(Kaarten k1, Kaarten k2) {
+            if (k1.isTroef()) {
+                if (k2.isTroef()) {
+                    return Integer.compare(k1.nummer, k2.nummer);
+                } else {
+                    return 1;
+                }
+            } else{
+                if (k2.isTroef()) {
+                    return -1;
+                } else {
+                    if (k1.isUitgekomenSoort()){
+                        if (k2.isUitgekomenSoort()) {
+                            return Integer.compare(k1.nummer, k2.nummer);
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (k2.isUitgekomenSoort()) {
+                            return -1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+        }
+    };
+        
 }

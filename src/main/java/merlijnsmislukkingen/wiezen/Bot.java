@@ -74,10 +74,9 @@ public class Bot {
         }
         return false;
     }
-    public void legKaart(Group midden, Kaarten eersteKaart) {
-        Text kaart2speler = new Text("bot1");
-        Text kaart3speler = new Text("bot2");
-        Text kaart4speler = new Text("bot3");
+    public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
+        Text kaart2speler = new Text(this.getName());
+        kaart2speler.setY(10);
         eersteKaart.getSoort();
         for (int i=0; i<splrdeck.size();i++){
             Kaarten kaart = splrdeck.get(i);
@@ -101,12 +100,18 @@ public class Bot {
             splrdeck.remove(welkkaart);
             
         }
+        slag.add(gelegdeKaart);
         String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
         ImageView mid = new ImageView(gekozenImage);
         x = x+xIncrease;
         mid.setLayoutX(x);
+        kaart2speler.setLayoutX(x+20);
         midden.getChildren().add(mid);
+        midden.getChildren().add(kaart2speler);
         System.out.println(x);
+    }
+    public Kaarten getGelegdeKaart() {
+        return this.gelegdeKaart;
     }
 }
