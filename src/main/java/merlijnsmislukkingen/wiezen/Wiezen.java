@@ -190,9 +190,6 @@ public class Wiezen extends Application {
         });
         
         
-        
-        
-        
         midden.getChildren().add(kaartView);
         BorderPane onderkant = new BorderPane(handView);
         onderkant.setMinHeight(200);

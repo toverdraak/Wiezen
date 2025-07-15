@@ -62,7 +62,7 @@ public class Round  {
                         if (bot2.getGelegdeKaart() == winnende) {
                             System.out.println("bot2 wint");
                         }
-                        else {
+                        else if (bot3.getGelegdeKaart() == winnende) {
                             System.out.println("bot3 wint");
                         }
                     }
