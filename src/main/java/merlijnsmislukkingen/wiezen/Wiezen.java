@@ -117,26 +117,32 @@ public class Wiezen extends Application {
 
         pas.setOnAction(e -> {
             splrvraagt = false;
+            List<Bot> vragers = new ArrayList<>();
             vraag.setDisable(true);
             pas.setDisable(true);
             boolean splr1vraag = bot1.getActie();
             if (splr1vraag == true) {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
+                vragers.add(bot1);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
                 if (splr2vraag == true) {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
+                    vragers.add(bot2);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
+                    vragers.add(bot3);
                 }
+                
             }
             System.out.println(spelersgevraagd);
+            Round round1 = new Round(handView, splr1, kaartView);
         });
         vraag.setOnAction(e -> {
             splrvraagt = true;
@@ -148,20 +154,24 @@ public class Wiezen extends Application {
             if (splr1vraag == true) {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
+                Team passers = new Team(bot3, bot2);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
                 if (splr2vraag == true) {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
+                    Team passers = new Team(bot3, bot1);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
+                    Team passers = new Team(bot1, bot2);
                 }
             }
             System.out.println(spelersgevraagd);
+            Round round1 = new Round(handView, splr1, kaartView);
         });
         
         
