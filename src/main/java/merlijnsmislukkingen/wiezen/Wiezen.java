@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package merlijnsmislukkingen.wiezen;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -29,58 +29,76 @@ import javafx.stage.Stage;
  * @author merlijn
  */
 public class Wiezen extends Application {
+
     private List<Kaarten> deck = new ArrayList<>();
-    private List<Kaarten> splr1 = new ArrayList<>(); 
+    private List<Kaarten> splr1 = new ArrayList<>();
     private List<Kaarten> splr2 = new ArrayList<>();
     private List<Kaarten> splr3 = new ArrayList<>();
     private List<Kaarten> splr4 = new ArrayList<>();
     public String troef;
+    private boolean splrvraagt;
+    public int spelersgevraagd;
+    Font buttonfont = new Font(20);
+
     @Override
-    public void start(Stage stage) throws Exception  {
+    public void start(Stage stage) throws Exception {
         BorderPane kaarten = new BorderPane();
         createDeck();
         Kaarten troefkaart = randomCard();
         String troefkaartsoort = troefkaart.getSoort();
         setTroef(troefkaartsoort);
         Kaarten.setTroef(troefkaartsoort);
+        Bot.setTroef(troefkaartsoort);
         int nrtroefkaart = troefkaart.getNummer();
-        
+
         Collections.shuffle(deck);
         deelKaarten();
         Collections.sort(splr1);
-        
+        Collections.sort(splr2);
+        Collections.sort(splr3);
+        Collections.sort(splr4);
+
+        Bot bot1 = new Bot();
+        Bot bot2 = new Bot();
+        Bot bot3 = new Bot();
+        bot1.setList(splr2);
+        bot2.setList(splr3);
+        bot3.setList(splr4);
+
         Group handView = new Group();
         double startAngle = -20;         // Beginrotatie
         double angleIncrement = 3.2;     // Per kaart iets meer draaien
         double overlap = 55;             // Hoeveel kaarten overlappen
         double startX = 500;             // Beginpositie X
         double y = 20;
-        
+
         Group buttons = new Group();
         double bstartX = 200;
         double bstartY = 0;
-        
+
         Button vraag = new Button("Vraag");
-        vraag.setScaleX(3);
-        vraag.setScaleY(3);
+        vraag.setPrefHeight(70);
+        vraag.setPrefWidth(150);
         vraag.setLayoutX(bstartX);
         vraag.setLayoutY(bstartY);
+        vraag.setFont(buttonfont);
         buttons.getChildren().add(vraag);
         double bx = startX + 100;
         Button pas = new Button("Pas");
+        pas.setFont(buttonfont);
         pas.setLayoutX(bx);
         pas.setLayoutY(bstartY);
-        pas.setScaleX(2);
-        pas.setScaleY(2);
+        pas.setPrefHeight(70);
+        pas.setPrefWidth(150);
         buttons.getChildren().add(pas);
         int midden = splr1.size() / 2;
-        
-        for (int i = 0; i <splr1.size(); i++) {
-            Kaarten kaart =splr1.get(i);
+
+        for (int i = 0; i < splr1.size(); i++) {
+            Kaarten kaart = splr1.get(i);
             String soort = kaart.getSoort();
             int nr = kaart.getNummer();
-            String location = "/"+ soort+nr+".png";
-            Image image = new Image(Wiezen.class.getResourceAsStream(location), 120,180, true, true);
+            String location = "/" + soort + nr + ".png";
+            Image image = new Image(Wiezen.class.getResourceAsStream(location), 120, 180, true, true);
             //kaarten.getChildren().add(new ImageView(image));
             ImageView kaartView = new ImageView(image);
             double angle = startAngle + i * angleIncrement;
@@ -93,9 +111,62 @@ public class Wiezen extends Application {
 
             handView.getChildren().add(kaartView);
         }
-        String location = "/"+ troef+nrtroefkaart+".png";
-        Image image = new Image(Wiezen.class.getResourceAsStream(location), 120,180, true, true);
+        String location = "/" + troef + nrtroefkaart + ".png";
+        Image image = new Image(Wiezen.class.getResourceAsStream(location), 120, 180, true, true);
         ImageView kaartView = new ImageView(image);
+
+        pas.setOnAction(e -> {
+            splrvraagt = false;
+            vraag.setDisable(true);
+            pas.setDisable(true);
+            boolean splr1vraag = bot1.getActie();
+            if (splr1vraag == true) {
+                System.out.println("bot1vraagt");
+                spelersgevraagd++;
+            }
+            if (spelersgevraagd < 2) {
+                boolean splr2vraag = bot2.getActie();
+                if (splr2vraag == true) {
+                    System.out.println("bot2vraagt");
+                    spelersgevraagd++;
+                }
+                if (spelersgevraagd < 2) {
+                    boolean splr3vraag = bot3.getActie();
+                    System.out.println("bot3vraagt");
+                    spelersgevraagd++;
+                }
+            }
+            System.out.println(spelersgevraagd);
+        });
+        vraag.setOnAction(e -> {
+            splrvraagt = true;
+            spelersgevraagd++;
+            vraag.setDisable(true);
+            pas.setDisable(true);
+            System.out.println(spelersgevraagd);
+            boolean splr1vraag = bot1.getActie();
+            if (splr1vraag == true) {
+                System.out.println("bot1vraagt");
+                spelersgevraagd++;
+            }
+            if (spelersgevraagd < 2) {
+                boolean splr2vraag = bot2.getActie();
+                if (splr2vraag == true) {
+                    System.out.println("bot2vraagt");
+                    spelersgevraagd++;
+                }
+                if (spelersgevraagd < 2) {
+                    boolean splr3vraag = bot3.getActie();
+                    System.out.println("bot3vraagt");
+                    spelersgevraagd++;
+                }
+            }
+            System.out.println(spelersgevraagd);
+        });
+        
+        
+        
+        
         
         
         BorderPane onderkant = new BorderPane(handView);
@@ -111,9 +182,10 @@ public class Wiezen extends Application {
         stage.setY(70);
         stage.show();
     }
+
     private void createDeck() {
         String[] soorten = {"harten", "ruiten", "klaveren", "schoppen"};
-        int[] waardes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14};
+        int[] waardes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
         for (String soort : soorten) {
             for (int waarde : waardes) {
@@ -122,27 +194,32 @@ public class Wiezen extends Application {
             }
         }
     }
+
     private void deelKaarten() {
         for (int i = 0; i < deck.size(); i++) {
-            if (i % 4 == 0) 
+            if (i % 4 == 0) {
                 splr1.add(deck.get(i));
-            else if (i % 4 == 1) 
+            } else if (i % 4 == 1) {
                 splr2.add(deck.get(i));
-            else   if (i % 4 == 2) 
+            } else if (i % 4 == 2) {
                 splr3.add(deck.get(i));
-            else 
+            } else {
                 splr4.add(deck.get(i));
+            }
         }
-        
+
     }
+
     private Kaarten randomCard() {
         Random rkaart = new Random();
         int randomkaart = rkaart.nextInt(53);
-        return deck.get(randomkaart);        
+        return deck.get(randomkaart);
     }
+
     public void setTroef(String soort) {
         troef = soort;
     }
+
     public String getTroef() {
         return troef;
     }
