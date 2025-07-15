@@ -10,6 +10,7 @@ import java.util.Random;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -27,7 +28,9 @@ public class Bot {
     int welkkaart;
     Kaarten gelegdeKaart;
     private String name;
-
+    private int xIncrease = 120 ;
+    private static int x = 0;
+    
     public Bot(String naam) {
         name = naam;
     }
@@ -71,9 +74,10 @@ public class Bot {
         }
         return false;
     }
-    public void legKaart(ImageView mid, Group midden) {
-        System.out.println(splrdeck);
-        Kaarten eersteKaart = Round.getGekozenKaart();
+    public void legKaart(Group midden, Kaarten eersteKaart) {
+        Text kaart2speler = new Text("bot1");
+        Text kaart3speler = new Text("bot2");
+        Text kaart4speler = new Text("bot3");
         eersteKaart.getSoort();
         for (int i=0; i<splrdeck.size();i++){
             Kaarten kaart = splrdeck.get(i);
@@ -99,8 +103,10 @@ public class Bot {
         }
         String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
-        mid.setImage(gekozenImage);
+        ImageView mid = new ImageView(gekozenImage);
+        x = x+xIncrease;
+        mid.setLayoutX(x);
         midden.getChildren().add(mid);
-        System.out.println(splrdeck);
+        System.out.println(x);
     }
 }
