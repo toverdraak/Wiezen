@@ -40,6 +40,9 @@ public class Wiezen extends Application {
     public int spelersgevraagd;
     Font buttonfont = new Font(20);
     private boolean actie;
+    public static boolean winner;
+    private int ronde=1;
+    public Bot splr = new Bot(null);
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -94,8 +97,17 @@ public class Wiezen extends Application {
         pas.setLayoutX(bx);
         pas.setLayoutY(bstartY);
         pas.setPrefHeight(70);
-        pas.setPrefWidth(150);
+        pas.setPrefWidth(200);
         buttons.getChildren().add(pas);
+        bx = startX + 1000;
+        Button rondes = new Button("volgende ronde");
+        rondes.setFont(buttonfont);
+        rondes.setLayoutX(bx);
+        rondes.setLayoutY(bstartY);
+        rondes.setPrefHeight(70);
+        rondes.setPrefWidth(150);
+        rondes.setDisable(true);
+        buttons.getChildren().add(rondes);
         int middenvan = splr1.size() / 2;
 
         for (int i = 0; i < splr1.size(); i++) {
@@ -155,8 +167,10 @@ public class Wiezen extends Application {
                 
             }
             System.out.println(spelersgevraagd);
+            rondes.setDisable(false);
+            Round.setWinner(splr);
             Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie, passer.get(0));
-            Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3);
+            Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3,rondes, splr);
         });
         vraag.setOnAction(e -> {
             actie = false;
@@ -185,10 +199,53 @@ public class Wiezen extends Application {
                     Team passers = new Team(bot1, bot2,actie, bot3);
                 }
             }
-            System.out.println(spelersgevraagd);
-            Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3);
+            rondes.setDisable(false);
+            Round.setWinner(splr);
+            Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3,rondes,splr);
         });
-        
+        rondes.setOnAction(e -> {
+            if (Round.getWinner() != null) {
+                rondes.setDisable(true);
+                midden.getChildren().clear();
+                if (ronde == 12){
+                    Round round13 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 11){
+                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 10){
+                    Round round11 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 9){
+                    Round round10 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 8){
+                    Round round9 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 7){
+                    Round round8 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 6){
+                    Round round7 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 5){
+                    Round round6 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 4){
+                    Round round5 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 3){
+                    Round round4 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 2){
+                    Round round3 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                if (ronde == 1){
+                    Round round2 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                }
+                ronde++;
+            }
+        });
         
         midden.getChildren().add(kaartView);
         BorderPane onderkant = new BorderPane(handView);
@@ -244,5 +301,14 @@ public class Wiezen extends Application {
 
     public String getTroef() {
         return troef;
+    }
+    public static void setSpelerWinner() {
+        winner = true;
+    }
+    public static void setSpelerLoser() {
+        winner = false;
+    }
+    public boolean getSpelerResult(){
+        return winner;
     }
 }

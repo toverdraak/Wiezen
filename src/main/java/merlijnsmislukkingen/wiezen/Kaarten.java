@@ -53,6 +53,9 @@ public class Kaarten implements Comparable<Kaarten>  {
     public static void setUitgekomenSoort(String soort) {
         uitgekomen = soort;
     }
+    public static String getUitGekomenSoort() {
+        return uitgekomen;
+    }
     boolean isUitgekomenSoort() {
         return (this.soort.equals(uitgekomen));
     }

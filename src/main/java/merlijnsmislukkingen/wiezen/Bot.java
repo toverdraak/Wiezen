@@ -28,12 +28,13 @@ public class Bot {
     int welkkaart;
     Kaarten gelegdeKaart;
     private String name;
-    private int xIncrease = 120 ;
+    private int xIncrease = 120;
     private static int x = 0;
-    
+    private boolean iswinner = false;
     public Bot(String naam) {
         name = naam;
     }
+
     public void setList(List cards) {
         splrdeck = cards;
     }
@@ -42,6 +43,11 @@ public class Bot {
         System.out.println(troef);
         detroef = troef;
     }
+
+    public void setName(String naam) {
+        name = naam;
+    }
+
     public String getName() {
         return name;
     }
@@ -74,44 +80,114 @@ public class Bot {
         }
         return false;
     }
+
+    public static void resetX() {
+        x = 0;
+    }
+
     public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
         Text kaart2speler = new Text(this.getName());
         kaart2speler.setY(10);
-        eersteKaart.getSoort();
-        for (int i=0; i<splrdeck.size();i++){
-            Kaarten kaart = splrdeck.get(i);
-            if (kaart.getSoort() == eersteKaart.getSoort()){
-                opties++;
+        optiekaarten.clear();
+//        for (int i=0; i<splrdeck.size();i++){
+//            Kaarten kaart = splrdeck.get(i);
+//            if (kaart.getSoort() == eersteKaart.getSoort()){
+//                opties++;
+//                optiekaarten.add(kaart);
+//                splrdeck.remove(i);
+//            }
+//        }
+        for (Kaarten kaart : new ArrayList<>(splrdeck)) {
+            if (kaart.getSoort().equals(eersteKaart.getSoort())) {
                 optiekaarten.add(kaart);
-                splrdeck.remove(i);
             }
         }
-        if (opties > 0) {
-            Random welkekaart = new Random();
-            welkkaart = welkekaart.nextInt(opties);
-            opties = 0;
-            gelegdeKaart = optiekaarten.get(welkkaart);
-            optiekaarten.remove(welkkaart);
-            splrdeck.addAll(optiekaarten);
+        Random random = new Random();
+
+        if (!optiekaarten.isEmpty()) {
+            // Als er kaarten van dezelfde soort zijn
+            int keuze = random.nextInt(optiekaarten.size());
+            gelegdeKaart = optiekaarten.get(keuze);
+            splrdeck.remove(gelegdeKaart);  // veilig verwijderen
         } else {
-            Random welkekaart = new Random();
-            welkkaart = welkekaart.nextInt(splrdeck.size());
-            gelegdeKaart =splrdeck.get(welkkaart);
-            splrdeck.remove(welkkaart);
-            
+            // Geen kaarten van de gevraagde soort → willekeurige kaart
+            int keuze = random.nextInt(splrdeck.size());
+            gelegdeKaart = splrdeck.remove(keuze);
         }
+
+        // Voeg afgelegde kaart toe aan slag
         slag.add(gelegdeKaart);
+
+        // Teken afbeelding
         String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
         ImageView mid = new ImageView(gekozenImage);
-        x = x+xIncrease;
+
+        // Positioneer en voeg toe
+        x = x + xIncrease;
         mid.setLayoutX(x);
-        kaart2speler.setLayoutX(x+20);
+        kaart2speler.setLayoutX(x + 20);
+
         midden.getChildren().add(mid);
         midden.getChildren().add(kaart2speler);
-        System.out.println(x);
+
+    }
+//        if (opties > 0) {
+//            Random welkekaart = new Random();
+//            welkkaart = welkekaart.nextInt(opties);
+//            opties = 0;
+//            gelegdeKaart = optiekaarten.get(welkkaart);
+//            optiekaarten.remove(welkkaart);
+//            splrdeck.addAll(optiekaarten);
+//        } else {
+//            Random welkekaart = new Random();
+//            welkkaart = welkekaart.nextInt(splrdeck.size());
+//            gelegdeKaart =splrdeck.get(welkkaart);
+//            splrdeck.remove(welkkaart);
+//            
+//        }
+//        slag.add(gelegdeKaart);
+//        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
+//        Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
+//        ImageView mid = new ImageView(gekozenImage);
+//        x = x+xIncrease;
+//        mid.setLayoutX(x);
+//        kaart2speler.setLayoutX(x+20);
+//        midden.getChildren().add(mid);
+//        midden.getChildren().add(kaart2speler);
+//        System.out.println(x);
+//    }
+    public void legEersteKaart(Group midden, List slag) {
+        Text kaart2speler = new Text(this.getName());
+        kaart2speler.setY(10);
+        Random eersterandom = new Random();
+        int keuze = eersterandom.nextInt(splrdeck.size());
+        gelegdeKaart = splrdeck.remove(keuze);
+        slag.add(gelegdeKaart);
+
+        // Teken afbeelding
+        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
+        Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
+        ImageView mid = new ImageView(gekozenImage);
+
+        // Positioneer en voeg toe
+        x = x + xIncrease;
+        mid.setLayoutX(x);
+        kaart2speler.setLayoutX(x + 20);
+
+        midden.getChildren().add(mid);
+        midden.getChildren().add(kaart2speler);
     }
     public Kaarten getGelegdeKaart() {
         return this.gelegdeKaart;
+    }
+    public void setIsWinner() {
+        iswinner = true;
+    }
+    public boolean getIsWinner() {
+        return iswinner;
+    }
+    public void resetIsWinner() {
+        iswinner = false;
     }
 }
