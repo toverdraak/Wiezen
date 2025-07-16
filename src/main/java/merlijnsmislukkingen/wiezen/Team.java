@@ -28,6 +28,7 @@ public class Team {
             System.out.println("Jij zit in een team met " + rest.getName());
             teamledenpassers.add(splr);
             teamledenpassers.add(rest);
+            rest.setTeammate();
         } else {
             System.out.println("team 2 bestaat uit " + teamlid1.getName() + " en " + teamlid2.getName() + " zij moeten 6 rondes winnen");
             System.out.println("Jij zit in een team met " + rest.getName());
@@ -35,6 +36,7 @@ public class Team {
             teamledenvragers.add(rest);
             teamledenpassers.add(teamlid1);
             teamledenpassers.add(teamlid2);
+            rest.setTeammate();
         }
     }
 
@@ -53,4 +55,17 @@ public class Team {
         }
         return ("De vragers hebben al "+slagenvragers+ " en de passers al "+ slagenpassers);
     }
+    public static int getSlagenVragers(){
+        return slagenvragers;
+    }
+    public static int getSlagenPassers(){
+        return slagenpassers;
+    }
+    public static List<Bot> getVragers() {
+        return teamledenvragers;
+    }
+    public static List<Bot> getPassers() {
+        return teamledenpassers;
+    }
+    
 }

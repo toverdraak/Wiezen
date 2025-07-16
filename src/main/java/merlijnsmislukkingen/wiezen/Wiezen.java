@@ -22,6 +22,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -42,7 +43,7 @@ public class Wiezen extends Application {
     private boolean actie;
     public static boolean winner;
     private int ronde=1;
-    public Bot splr = new Bot(null);
+    public Bot splr = new Bot("Jij");
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -54,7 +55,20 @@ public class Wiezen extends Application {
         Kaarten.setTroef(troefkaartsoort);
         Bot.setTroef(troefkaartsoort);
         int nrtroefkaart = troefkaart.getNummer();
-
+        
+        Text scorevragers = new Text();
+        Text scorepassers = new Text();
+        
+        scorevragers.setFont(buttonfont);
+        scorepassers.setFont(buttonfont);
+        
+        scorevragers.setTranslateX(20);
+        scorepassers.setTranslateX(-20);
+        
+        scorevragers.setTranslateY(300);
+        scorepassers.setTranslateY(300);
+        
+        
         Collections.shuffle(deck);
         deelKaarten();
         Collections.sort(splr1);
@@ -174,6 +188,8 @@ public class Wiezen extends Application {
             Round.setWinner(splr);
             splr.setIsWinner();
             Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie, passer.get(0), splr);
+            scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+            scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
             Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3,rondes, splr);
         });
         vraag.setOnAction(e -> {
@@ -206,6 +222,8 @@ public class Wiezen extends Application {
             rondes.setDisable(false);
             Round.setWinner(splr);
             splr.setIsWinner();
+            scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+            scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
             Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3,rondes,splr);
         });
         rondes.setOnAction(e -> {
@@ -215,39 +233,62 @@ public class Wiezen extends Application {
                 midden.getChildren().clear();
                 if (ronde == 12){
                     Round round13 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 11){
                     Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 10){
                     Round round11 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 9){
                     Round round10 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 8){
                     Round round9 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 7){
                     Round round8 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 6){
                     Round round7 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
-                }
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");                }
                 if (ronde == 5){
                     Round round6 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 4){
                     Round round5 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 3){
                     Round round4 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 2){
                     Round round3 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 if (ronde == 1){
                     Round round2 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
+                    scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }
                 ronde++;
             }
@@ -256,6 +297,8 @@ public class Wiezen extends Application {
         midden.getChildren().add(kaartView);
         BorderPane onderkant = new BorderPane(handView);
         onderkant.setMinHeight(200);
+        kaarten.setLeft(scorevragers);
+        kaarten.setRight(scorepassers);
         kaarten.setBottom(onderkant);
         kaarten.setCenter(midden);
         kaarten.setTop(buttons);

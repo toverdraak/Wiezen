@@ -32,6 +32,7 @@ public class Bot {
     private static int x = 0;
     private boolean iswinner = false;
     private int bid;
+    public boolean isteammate = false;
     
     public Bot(String naam) {
         name = naam;
@@ -94,6 +95,9 @@ public class Bot {
 
     public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
         Text kaart2speler = new Text(this.getName());
+        if (this.isteammate){
+            kaart2speler.setText(this.getName()+"(team)");
+        }
         kaart2speler.setY(0);
         optiekaarten.clear();
 //        for (int i=0; i<splrdeck.size();i++){
@@ -166,6 +170,9 @@ public class Bot {
 //    }
     public void legEersteKaart(Group midden, List slag) {
         Text kaart2speler = new Text(this.getName());
+        if (this.isteammate){
+            kaart2speler.setText(this.getName()+"(team)");
+        }
         kaart2speler.setY(0);
         Random eersterandom = new Random();
         int keuze = eersterandom.nextInt(splrdeck.size());
@@ -196,5 +203,11 @@ public class Bot {
     }
     public void resetIsWinner() {
         iswinner = false;
+    }
+    public void setTeammate() {
+        isteammate = true;
+    }
+    public boolean getTeammate() {
+        return isteammate;
     }
 }

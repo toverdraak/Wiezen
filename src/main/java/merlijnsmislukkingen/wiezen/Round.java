@@ -41,15 +41,12 @@ public class Round  {
             bot2.legEersteKaart(midden, slag);
             BotGekozenKaart = slag.get(0);
             Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
-            bot3.legKaart(midden, BotGekozenKaart, slag);
-            bot1.legKaart(midden, BotGekozenKaart, slag);            
+            bot3.legKaart(midden, BotGekozenKaart, slag);          
         } else if (bot3.getIsWinner()) {
             System.out.println("bot3 komt uit");
             bot3.legEersteKaart(midden, slag);
             BotGekozenKaart = slag.get(0);
-            Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
-            bot1.legKaart(midden, BotGekozenKaart, slag);
-            bot2.legKaart(midden, BotGekozenKaart, slag);            
+            Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());           
         }
         for (Node node : handView.getChildren()) {
             if (node instanceof ImageView) {
@@ -88,6 +85,13 @@ public class Round  {
                             bot1.legKaart(midden, this.gekozenKaart, slag);
                             bot2.legKaart(midden, this.gekozenKaart, slag);
                             bot3.legKaart(midden, this.gekozenKaart, slag);
+                        }
+                        if (bot2.getIsWinner()){
+                            bot1.legKaart(midden, BotGekozenKaart, slag);
+                        }  
+                        if (bot3.getIsWinner()){
+                            bot1.legKaart(midden, BotGekozenKaart, slag);  
+                            bot2.legKaart(midden, BotGekozenKaart, slag);  
                         }
                         bot1.resetIsWinner();
                         bot2.resetIsWinner();
