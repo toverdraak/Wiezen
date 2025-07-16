@@ -5,6 +5,7 @@
 package merlijnsmislukkingen.wiezen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javafx.scene.Group;
@@ -25,6 +26,7 @@ public class Bot {
     int troefboven10 = 0;
     int opties = 0;
     private List<Kaarten> optiekaarten = new ArrayList<>();
+    private List<Bot> teammates = new ArrayList<>();
     int welkkaart;
     Kaarten gelegdeKaart;
     private String name;
@@ -33,7 +35,8 @@ public class Bot {
     private boolean iswinner = false;
     private int bid;
     public boolean isteammate = false;
-    
+    private Kaarten teammatekaart;
+
     public Bot(String naam) {
         name = naam;
     }
@@ -46,12 +49,15 @@ public class Bot {
         System.out.println(troef);
         detroef = troef;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         bid = id;
     }
+
     public int getId() {
         return bid;
     }
+
     public void setName(String naam) {
         name = naam;
     }
@@ -95,8 +101,8 @@ public class Bot {
 
     public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
         Text kaart2speler = new Text(this.getName());
-        if (this.isteammate){
-            kaart2speler.setText(this.getName()+"(team)");
+        if (this.isteammate) {
+            kaart2speler.setText(this.getName() + "(team)");
         }
         kaart2speler.setY(0);
         optiekaarten.clear();
@@ -117,9 +123,44 @@ public class Bot {
 
         if (!optiekaarten.isEmpty()) {
             // Als er kaarten van dezelfde soort zijn
-            int keuze = random.nextInt(optiekaarten.size());
-            gelegdeKaart = optiekaarten.get(keuze);
-            splrdeck.remove(gelegdeKaart);  // veilig verwijderen
+            if (slag.size() == 3) {
+                Collections.sort(slag, Kaarten.SlagComparator);
+                teammates.addAll(Team.getVragers());
+                if (teammates.contains(this)) {
+                    if (teammates.get(0).equals(this)) {
+                        teammatekaart = teammates.get(1).getGelegdeKaart();
+                    } else {
+                        teammatekaart = teammates.get(0).getGelegdeKaart();
+                    }
+                    if (slag.get(2).equals(teammatekaart)) {
+                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
+                        gelegdeKaart = optiekaarten.get(0);
+                    } else {
+                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
+                        gelegdeKaart = optiekaarten.get(optiekaarten.size() - 1);
+                    }
+                } else {
+                    teammates.clear();
+                    teammates.addAll(Team.getPassers());
+                    if (teammates.get(0).getId() == (this.getId())) {
+                        teammatekaart = teammates.get(1).getGelegdeKaart();
+                    } else {
+                        teammatekaart = teammates.get(0).getGelegdeKaart();
+                    }
+                    if (slag.get(2).equals(teammatekaart)) {
+                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
+                        gelegdeKaart = optiekaarten.get(0);
+                    } else {
+                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
+                        gelegdeKaart = optiekaarten.get(optiekaarten.size() - 1);
+                    }
+                }
+                splrdeck.remove(gelegdeKaart);
+            } else {
+                int keuze = random.nextInt(optiekaarten.size());
+                gelegdeKaart = optiekaarten.get(keuze);
+                splrdeck.remove(gelegdeKaart);  // veilig verwijderen
+            }
         } else {
             // Geen kaarten van de gevraagde soort → willekeurige kaart
             int keuze = random.nextInt(splrdeck.size());
@@ -143,35 +184,11 @@ public class Bot {
         midden.getChildren().add(kaart2speler);
 
     }
-//        if (opties > 0) {
-//            Random welkekaart = new Random();
-//            welkkaart = welkekaart.nextInt(opties);
-//            opties = 0;
-//            gelegdeKaart = optiekaarten.get(welkkaart);
-//            optiekaarten.remove(welkkaart);
-//            splrdeck.addAll(optiekaarten);
-//        } else {
-//            Random welkekaart = new Random();
-//            welkkaart = welkekaart.nextInt(splrdeck.size());
-//            gelegdeKaart =splrdeck.get(welkkaart);
-//            splrdeck.remove(welkkaart);
-//            
-//        }
-//        slag.add(gelegdeKaart);
-//        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
-//        Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
-//        ImageView mid = new ImageView(gekozenImage);
-//        x = x+xIncrease;
-//        mid.setLayoutX(x);
-//        kaart2speler.setLayoutX(x+20);
-//        midden.getChildren().add(mid);
-//        midden.getChildren().add(kaart2speler);
-//        System.out.println(x);
-//    }
+
     public void legEersteKaart(Group midden, List slag) {
         Text kaart2speler = new Text(this.getName());
-        if (this.isteammate){
-            kaart2speler.setText(this.getName()+"(team)");
+        if (this.isteammate) {
+            kaart2speler.setText(this.getName() + "(team)");
         }
         kaart2speler.setY(0);
         Random eersterandom = new Random();
@@ -192,21 +209,31 @@ public class Bot {
         midden.getChildren().add(mid);
         midden.getChildren().add(kaart2speler);
     }
+
+    public void setGelegdeKaart(Kaarten kaart) {
+        this.gelegdeKaart = kaart;
+    }
+
     public Kaarten getGelegdeKaart() {
         return this.gelegdeKaart;
     }
+
     public void setIsWinner() {
         iswinner = true;
     }
+
     public boolean getIsWinner() {
         return iswinner;
     }
+
     public void resetIsWinner() {
         iswinner = false;
     }
+
     public void setTeammate() {
         isteammate = true;
     }
+
     public boolean getTeammate() {
         return isteammate;
     }

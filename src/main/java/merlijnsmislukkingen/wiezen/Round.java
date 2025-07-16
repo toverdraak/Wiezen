@@ -58,6 +58,7 @@ public class Round  {
                         if (splr.getIsWinner()) {
                             System.out.println("speler komt uit");
                             this.gekozenKaart = spelersKaarten.get(index);
+                            splr.setGelegdeKaart(gekozenKaart);
                             Kaarten.setUitgekomenSoort(gekozenKaart.getSoort());
                         } else {
                             Kaarten gekozen = spelersKaarten.get(index);
@@ -69,6 +70,7 @@ public class Round  {
                             } else {
                                 this.gekozenKaart = gekozen;
                                 Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
+                            splr.setGelegdeKaart(gekozenKaart);
                         }
                         }
                         String imagePath = "/" + this.gekozenKaart.getSoort() + this.gekozenKaart.getNummer() + ".png";

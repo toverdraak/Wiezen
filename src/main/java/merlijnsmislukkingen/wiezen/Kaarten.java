@@ -123,5 +123,11 @@ public class Kaarten implements Comparable<Kaarten>  {
             }
         }
     };
+    public static Comparator<Kaarten> nummerComparator = new Comparator<Kaarten>() {
+        @Override
+        public int compare(Kaarten k, Kaarten c) {
+            return Integer.compare(k.nummer, c.nummer);
+        }
+    };
         
 }

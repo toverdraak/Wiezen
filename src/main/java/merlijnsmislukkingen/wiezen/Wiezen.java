@@ -232,7 +232,7 @@ public class Wiezen extends Application {
                 rondes.setDisable(true);
                 midden.getChildren().clear();
                 if (ronde == 12){
-                    Round round13 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
                     scorevragers.setText(Team.getVragers().get(0).getName()+" & "+ Team.getVragers().get(1).getName()+" met "+Team.getSlagenVragers()+" slagen");
                     scorepassers.setText(Team.getPassers().get(0).getName()+" & "+ Team.getPassers().get(1).getName()+" met "+Team.getSlagenPassers()+" slagen");
                 }

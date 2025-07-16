@@ -67,5 +67,4 @@ public class Team {
     public static List<Bot> getPassers() {
         return teamledenpassers;
     }
-    
 }
