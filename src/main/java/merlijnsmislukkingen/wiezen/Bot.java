@@ -106,14 +106,6 @@ public class Bot {
         }
         kaart2speler.setY(0);
         optiekaarten.clear();
-//        for (int i=0; i<splrdeck.size();i++){
-//            Kaarten kaart = splrdeck.get(i);
-//            if (kaart.getSoort() == eersteKaart.getSoort()){
-//                opties++;
-//                optiekaarten.add(kaart);
-//                splrdeck.remove(i);
-//            }
-//        }
         for (Kaarten kaart : new ArrayList<>(splrdeck)) {
             if (kaart.getSoort().equals(eersteKaart.getSoort())) {
                 optiekaarten.add(kaart);
@@ -125,7 +117,7 @@ public class Bot {
             // Als er kaarten van dezelfde soort zijn
             if (slag.size() == 3) {
                 Collections.sort(slag, Kaarten.SlagComparator);
-                teammates.addAll(Team.getVragers());
+                teammates.addAll(Wiezen.vragersTeam.getMembers());
                 if (teammates.contains(this)) {
                     if (teammates.get(0).equals(this)) {
                         teammatekaart = teammates.get(1).getGelegdeKaart();
@@ -141,7 +133,7 @@ public class Bot {
                     }
                 } else {
                     teammates.clear();
-                    teammates.addAll(Team.getPassers());
+                    teammates.addAll(Wiezen.passersTeam.getMembers());
                     if (teammates.get(0).getId() == (this.getId())) {
                         teammatekaart = teammates.get(1).getGelegdeKaart();
                     } else {

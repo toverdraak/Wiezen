@@ -14,57 +14,83 @@ import java.util.List;
  */
 public class Team {
 
-    public static List<Bot> teamledenvragers = new ArrayList<>();
-    public static List<Bot> teamledenpassers = new ArrayList<>();
-    private static Bot a = new Bot(null);
-    public static int slagenvragers = 0;
-    public static int slagenpassers = 0;
+    static List<Team> teams = new ArrayList<>();
 
-    public Team(Bot teamlid1, Bot teamlid2, boolean teamdoel, Bot rest, Bot splr) {
-        if (teamdoel) {
-            System.out.println("team 1  bestaat uit " + teamlid1.getName() + " en " + teamlid2.getName() + " zij moeten 8 rondes winnen");
-            teamledenvragers.add(teamlid1);
-            teamledenvragers.add(teamlid2);
-            System.out.println("Jij zit in een team met " + rest.getName());
-            teamledenpassers.add(splr);
-            teamledenpassers.add(rest);
-            rest.setTeammate();
-        } else {
-            System.out.println("team 2 bestaat uit " + teamlid1.getName() + " en " + teamlid2.getName() + " zij moeten 6 rondes winnen");
-            System.out.println("Jij zit in een team met " + rest.getName());
-            teamledenvragers.add(splr);
-            teamledenvragers.add(rest);
-            teamledenpassers.add(teamlid1);
-            teamledenpassers.add(teamlid2);
-            rest.setTeammate();
-        }
+    List<Bot> teamLeden = new ArrayList<>();
+
+    private int slagen = 0;
+
+    private final boolean doel;
+    
+    public Team(boolean doel) {
+        this.doel = doel;
+        teams.add(this);
     }
 
-    public static String puntToevoegen(Bot winnend) {
-        for (int i = 0; i < 2; i++) {
-            a = teamledenvragers.get(i);
-            if (winnend.getId() == a.getId()) {
-                slagenvragers++;
+    /**
+     * Maak een team met spelers lid1 en lid2. Als het vragers zijn moet
+     * doel true zijn, als het passers zijn moet doel false zijn.
+     * @param doel
+     * @param lid1
+     * @param lid2 
+     */
+    public Team(boolean doel, Bot lid1, Bot lid2) {
+        teamLeden.add(lid1);
+        teamLeden.add(lid2);
+        this.doel = doel;
+    }
+
+    public void addMember(Bot member) {
+        System.out.println("ADD MEMBER " + member + " tot team " + (doel ? "vragers" : "passers"));
+        teamLeden.add(member);
+    }
+
+    public List<Bot> getMembers() {
+        return teamLeden;
+    }
+
+    public static Team getTeamByMember(Bot member) {
+        for (Team candidate : teams) {
+            if (candidate.getMembers().contains(member)) {
+                return candidate;
             }
         }
-        for (int i = 0; i < 2; i++) {
-            a = teamledenpassers.get(i);
-            if (winnend.getId() == a.getId()) {
-                slagenpassers++;
-            }
-        }
-        return ("De vragers hebben al "+slagenvragers+ " en de passers al "+ slagenpassers);
+        return null;
     }
-    public static int getSlagenVragers(){
-        return slagenvragers;
+
+    public boolean containsMember(Bot member) {
+        return teamLeden.contains(member);
     }
-    public static int getSlagenPassers(){
-        return slagenpassers;
+
+    /**
+     * Return het aantal slagen dat dit team momenteel heeft behaald.
+     * @return 
+     */
+    public int getSlagen() {
+        return slagen;
     }
-    public static List<Bot> getVragers() {
-        return teamledenvragers;
+
+    public String getName(int id) {
+        return teamLeden.get(id).getName();
     }
-    public static List<Bot> getPassers() {
-        return teamledenpassers;
+
+//    public static String puntToevoegen(Bot winnend) {
+//        for (int i = 0; i < 2; i++) {
+//            a = teamledenvragers.get(i);
+//            if (winnend.getId() == a.getId()) {
+//                slagenvragers++;
+//            }
+//        }
+//        for (int i = 0; i < 2; i++) {
+//            a = teamledenpassers.get(i);
+//            if (winnend.getId() == a.getId()) {
+//                slagenpassers++;
+//            }
+//        }
+//        return ("De vragers hebben al "+slagenvragers+ " en de passers al "+ slagenpassers);
+//    }
+
+    void addSlag() {
+        slagen = slagen + 1;
     }
 }

@@ -128,7 +128,11 @@ public class Round  {
                         }
                         Bot.resetX();
                     }
-                    System.out.println(Team.puntToevoegen(Round.getWinner()));
+                    Bot winner = Round.getWinner();
+                    Team winningTeam = Team.getTeamByMember(Round.getWinner());
+                    winningTeam.addSlag();
+                    System.out.println("Slag voor "+ winningTeam);
+//                    System.out.println(Team.puntToevoegen(Round.getWinner()));
                     welkeronde.setDisable(false);
                 });
             }
