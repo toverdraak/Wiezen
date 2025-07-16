@@ -31,6 +31,8 @@ public class Bot {
     private int xIncrease = 120;
     private static int x = 0;
     private boolean iswinner = false;
+    private int bid;
+    
     public Bot(String naam) {
         name = naam;
     }
@@ -43,7 +45,12 @@ public class Bot {
         System.out.println(troef);
         detroef = troef;
     }
-
+    public void setId(int id){
+        bid = id;
+    }
+    public int getId() {
+        return bid;
+    }
     public void setName(String naam) {
         name = naam;
     }
@@ -87,7 +94,7 @@ public class Bot {
 
     public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
         Text kaart2speler = new Text(this.getName());
-        kaart2speler.setY(10);
+        kaart2speler.setY(0);
         optiekaarten.clear();
 //        for (int i=0; i<splrdeck.size();i++){
 //            Kaarten kaart = splrdeck.get(i);
@@ -159,7 +166,7 @@ public class Bot {
 //    }
     public void legEersteKaart(Group midden, List slag) {
         Text kaart2speler = new Text(this.getName());
-        kaart2speler.setY(10);
+        kaart2speler.setY(0);
         Random eersterandom = new Random();
         int keuze = eersterandom.nextInt(splrdeck.size());
         gelegdeKaart = splrdeck.remove(keuze);

@@ -58,7 +58,7 @@ public class Round  {
                     // Zoek de juiste Kaarten-object bij dit ImageView
                     int index = handView.getChildren().indexOf(kaartView);
                     if (index >= 0 && index < spelersKaarten.size()) {
-                        if (Round.getWinner()!= null && Round.getWinner().equals(splr)) {
+                        if (splr.getIsWinner()) {
                             System.out.println("speler komt uit");
                             this.gekozenKaart = spelersKaarten.get(index);
                             Kaarten.setUitgekomenSoort(gekozenKaart.getSoort());
@@ -84,26 +84,27 @@ public class Round  {
                         slag.add(gekozenKaart);
 //                        PauseTransition pause = new PauseTransition(Duration.seconds(1.0)); // of 1.5 voor iets meer vertraging
 //                        pause.setOnFinished(ev -> {
-                        if (Round.getWinner()!= null && Round.getWinner().equals(splr)) {
+                        if (splr.getIsWinner()) {
                             bot1.legKaart(midden, this.gekozenKaart, slag);
                             bot2.legKaart(midden, this.gekozenKaart, slag);
                             bot3.legKaart(midden, this.gekozenKaart, slag);
                         }
+                        bot1.resetIsWinner();
+                        bot2.resetIsWinner();
+                        bot3.resetIsWinner();
+                        splr.resetIsWinner();
 //                       });
 //                        pause.play();
                         // ❌ Disable alle kaarten
                         for (Node n : handView.getChildren()) {
                             n.setDisable(true);
                         }
-                        Round.resetWinner();
-                        bot1.resetIsWinner();
-                        bot2.resetIsWinner();
-                        bot3.resetIsWinner();
                         Collections.sort(slag, Kaarten.SlagComparator);
                         Kaarten winnende = slag.get(3);
                         if (gekozenKaart == winnende) {
                             Wiezen.setSpelerWinner();
                             Round.setWinner(splr);
+                            splr.setIsWinner();
                         } else {
                             Wiezen.setSpelerLoser();
                         }
@@ -120,8 +121,8 @@ public class Round  {
                             bot3.setIsWinner();
                         }
                         Bot.resetX();
-                        System.out.println(Round.getWinner().getName());
                     }
+                    System.out.println(Team.puntToevoegen(Round.getWinner()));
                     welkeronde.setDisable(false);
                 });
             }
@@ -135,6 +136,8 @@ public class Round  {
     public static void setWinner(Bot bot1) {
         winning = bot1;
         winning.setName(bot1.getName());
+        winning.setId(bot1.getId());
+        System.out.println("de winnaar"+winning.getId());
     }
     public static Bot getWinner() {
         return winning;

@@ -68,7 +68,11 @@ public class Wiezen extends Application {
         bot1.setList(splr2);
         bot2.setList(splr3);
         bot3.setList(splr4);
-
+        bot1.setId(1);
+        bot2.setId(2);
+        bot3.setId(3);
+        splr.setId(0);
+        
         Group handView = new Group();
         double startAngle = -20;         // Beginrotatie
         double angleIncrement = 3.2;     // Per kaart iets meer draaien
@@ -166,10 +170,10 @@ public class Wiezen extends Application {
                 }
                 
             }
-            System.out.println(spelersgevraagd);
             rondes.setDisable(false);
             Round.setWinner(splr);
-            Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie, passer.get(0));
+            splr.setIsWinner();
+            Team vragersteam = new Team(vragers.get(0),vragers.get(1), actie, passer.get(0), splr);
             Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3,rondes, splr);
         });
         vraag.setOnAction(e -> {
@@ -183,28 +187,30 @@ public class Wiezen extends Application {
             if (splr1vraag == true) {
                 System.out.println("bot1vraagt");
                 spelersgevraagd++;
-                Team passers = new Team(bot3, bot2, actie, bot1);
+                Team passers = new Team(bot3, bot2, actie, bot1, splr);
             }
             if (spelersgevraagd < 2) {
                 boolean splr2vraag = bot2.getActie();
                 if (splr2vraag == true) {
                     System.out.println("bot2vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot3, bot1,actie, bot2);
+                    Team passers = new Team(bot3, bot1,actie, bot2, splr);
                 }
                 if (spelersgevraagd < 2) {
                     boolean splr3vraag = bot3.getActie();
                     System.out.println("bot3vraagt");
                     spelersgevraagd++;
-                    Team passers = new Team(bot1, bot2,actie, bot3);
+                    Team passers = new Team(bot1, bot2,actie, bot3, splr);
                 }
             }
             rondes.setDisable(false);
             Round.setWinner(splr);
+            splr.setIsWinner();
             Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3,rondes,splr);
         });
         rondes.setOnAction(e -> {
             if (Round.getWinner() != null) {
+                Round.resetWinner();
                 rondes.setDisable(true);
                 midden.getChildren().clear();
                 if (ronde == 12){
