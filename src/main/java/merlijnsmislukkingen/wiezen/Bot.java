@@ -27,6 +27,7 @@ public class Bot {
     int opties = 0;
     private List<Kaarten> optiekaarten = new ArrayList<>();
     private List<Bot> teammates = new ArrayList<>();
+    private List<Kaarten> verwijderdekaarten = new ArrayList<>();
     int welkkaart;
     Kaarten gelegdeKaart;
     private String name;
@@ -36,6 +37,7 @@ public class Bot {
     private int bid;
     public boolean isteammate = false;
     private Kaarten teammatekaart;
+    public Kaarten hoogsteKaart;
 
     public Bot(String naam) {
         name = naam;
@@ -99,7 +101,7 @@ public class Bot {
         x = 0;
     }
 
-    public void legKaart(Group midden, Kaarten eersteKaart, List slag) {
+    public void legKaart(Group midden, Kaarten eersteKaart, List<Kaarten> slag) {
         Text kaart2speler = new Text(this.getName());
         if (this.isteammate) {
             kaart2speler.setText(this.getName() + "(team)");
@@ -114,6 +116,8 @@ public class Bot {
         Random random = new Random();
 
         if (!optiekaarten.isEmpty()) {
+            System.out.println("thinking...");
+            opties = optiekaarten.size();
             // Als er kaarten van dezelfde soort zijn
             if (slag.size() == 3) {
                 Collections.sort(slag, Kaarten.SlagComparator);
@@ -127,9 +131,25 @@ public class Bot {
                     if (slag.get(2).equals(teammatekaart)) {
                         Collections.sort(optiekaarten, Kaarten.nummerComparator);
                         gelegdeKaart = optiekaarten.get(0);
+                        System.out.println("mijn team heeft al");
                     } else {
-                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
-                        gelegdeKaart = optiekaarten.get(optiekaarten.size() - 1);
+                        for (int i=0; i<opties-1; i++ ){
+                            hoogsteKaart = optiekaarten.get(i);
+                            if (Kaarten.nummerComparator.compare(hoogsteKaart, slag.get(2))<0) {
+                                verwijderdekaarten.add(optiekaarten.get(i));
+                                optiekaarten.remove(i);
+                                System.out.println("optie:"+i+1);
+                            }
+                        }
+                        if (!optiekaarten.isEmpty()) {
+                            gelegdeKaart= optiekaarten.get(0);
+                            System.out.println("het laagste dat er bovengaat (hopelijk):)");
+                        }
+                        else {
+                            Collections.sort(verwijderdekaarten, Kaarten.nummerComparator);
+                            gelegdeKaart = verwijderdekaarten.get(0);
+                            System.out.println("kan er niet boven");
+                        }
                     }
                 } else {
                     teammates.clear();
@@ -229,4 +249,34 @@ public class Bot {
     public boolean getTeammate() {
         return isteammate;
     }
+    public Kaarten getLogicaLastBot() {
+                    if (teammates.get(0).equals(this)) {
+                        teammatekaart = teammates.get(1).getGelegdeKaart();
+                    } else {
+                        teammatekaart = teammates.get(0).getGelegdeKaart();
+                    }
+                    if (slag.get(2).equals(teammatekaart)) {
+                        Collections.sort(optiekaarten, Kaarten.nummerComparator);
+                        gelegdeKaart = optiekaarten.get(0);
+                        System.out.println("mijn team heeft al");
+                    } else {
+                        for (int i=0; i<opties-1; i++ ){
+                            hoogsteKaart = optiekaarten.get(i);
+                            if (Kaarten.nummerComparator.compare(hoogsteKaart, slag.get(2))<0) {
+                                verwijderdekaarten.add(optiekaarten.get(i));
+                                optiekaarten.remove(i);
+                                System.out.println("optie:"+i+1);
+                            }
+                        }
+                        if (!optiekaarten.isEmpty()) {
+                            gelegdeKaart= optiekaarten.get(0);
+                            System.out.println("het laagste dat er bovengaat (hopelijk):)");
+                        }
+                        else {
+                            Collections.sort(verwijderdekaarten, Kaarten.nummerComparator);
+                            gelegdeKaart = verwijderdekaarten.get(0);
+                            System.out.println("kan er niet boven");
+                        }
+                    }
+}
 }

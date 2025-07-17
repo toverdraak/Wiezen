@@ -41,7 +41,7 @@ public class Team {
     }
 
     public void addMember(Bot member) {
-        System.out.println("ADD MEMBER " + member + " tot team " + (doel ? "vragers" : "passers"));
+//       System.out.println("ADD MEMBER " + member + " tot team " + (doel ? "vragers" : "passers"));
         teamLeden.add(member);
     }
 
