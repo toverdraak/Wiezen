@@ -189,6 +189,7 @@ public class Wiezen extends Application {
                 midden.getChildren().clear();
                 if (ronde == 12){
                     Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Bot.getGelegdeKaarten();
                 }
                 if (ronde == 11){
                     Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
@@ -224,7 +225,7 @@ public class Wiezen extends Application {
                     Round round2 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
                 }
                 updateTexts();
-
+                Bot.getGelegdeKaarten();
                 ronde++;
             }
         });
