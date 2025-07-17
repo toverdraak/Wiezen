@@ -127,6 +127,10 @@ public class Round  {
                             bot3.setIsWinner();
                         }
                         Bot.resetX();
+                        bot1.setGelegdeKaart(null);
+                        bot2.setGelegdeKaart(null);
+                        bot3.setGelegdeKaart(null);
+                        splr.setGelegdeKaart(null);
                     }
                     Bot winner = Round.getWinner();
                     Team winningTeam = Team.getTeamByMember(Round.getWinner());
