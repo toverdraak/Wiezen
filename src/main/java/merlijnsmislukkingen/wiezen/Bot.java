@@ -116,8 +116,6 @@ public class Bot {
         Random random = new Random();
 
         if (!optiekaarten.isEmpty()) {
-            System.out.println("thinking...");
-            opties = optiekaarten.size();
             if (slag.size() == 3) {
                 Collections.sort(slag, Kaarten.SlagComparator);
                 teammates.addAll(Wiezen.vragersTeam.getMembers());
@@ -223,14 +221,15 @@ public class Bot {
             gelegdeKaart = optiekaarten.get(0);
             System.out.println("mijn team heeft al");
         } else {
-            for (int i = 0; i < opties - 1; i++) {
+            for (int i = 0; i < optiekaarten.size(); i++) {
                 hoogsteKaart = optiekaarten.get(i);
-                hoogsteKaart.getNummer();
+                System.out.println(hoogsteKaart.getNummer());
                 System.out.println("optie:" + i);
                 if (Kaarten.nummerComparator.compare(hoogsteKaart, slag.get(2)) < 0) {
                     System.out.println("optie:" + i + "verwijderd");
                     verwijderdekaarten.add(optiekaarten.get(i));
                     optiekaarten.remove(i);
+                    i--;
                 }
                 
             }
