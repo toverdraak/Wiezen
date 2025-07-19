@@ -287,7 +287,7 @@ public class Bot {
             Collections.sort(optiekaarten, Kaarten.nummerComparator);
             for (int i = 0; i < optiekaarten.size(); i++) {
                 hoogsteKaart = optiekaarten.get(i);
-                System.out.println("optiekaarten 3rd player: " +hoogsteKaart.getInfo());
+//               System.out.println("optiekaarten 3rd player: " +hoogsteKaart.getInfo());
                 if (Kaarten.nummerComparator.compare(hoogsteKaart, slag.get(1)) < 0) {
                     verwijderdekaarten.add(optiekaarten.get(i));
                     optiekaarten.remove(i);
@@ -353,10 +353,11 @@ public class Bot {
                 System.out.println("kan er niet boven");
             }
         } else {
-            if (slag.get(0).equals(teammatekaart)) {
+            System.out.println(teammateKaart.getInfo());
+            if (slag.get(0).equals(teammateKaart)) {
                 Collections.sort(optiekaarten, Kaarten.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
-                if (teammatekaart.getNummer()>9) {
+                if (teammateKaart.getNummer()>9) {
                     for (int i = 0; i < optiekaarten.size(); i++) {
                         hoogsteKaart = optiekaarten.get(i);
                         if (hoogsteKaart.getNummer()==14){
