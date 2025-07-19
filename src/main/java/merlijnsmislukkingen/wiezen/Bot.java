@@ -113,7 +113,7 @@ public class Bot {
         for (Kaarten kaart : new ArrayList<>(splrdeck)) {
             if (kaart.getSoort().equals(eersteKaart.getSoort())) {
                 optiekaarten.add(kaart);
-                System.out.println("deze kaart wordt toegevoegd:" +kaart.getInfo());
+                //System.out.println("deze kaart wordt toegevoegd:" +kaart.getInfo());
             }
         }
         Random random = new Random();
@@ -156,7 +156,7 @@ public class Bot {
             }
         } else {
             // Geen kaarten van de gevraagde soort → willekeurige laagste kaart
-            System.out.println("GEVAAR");
+//            System.out.println("GEVAAR");
             Collections.sort(splrdeck, Kaarten.nummerComparator);
             gelegdeKaart = splrdeck.get(0);
             gelegdeKaart.getInfo();
@@ -279,7 +279,7 @@ public class Bot {
     }
 // wordt foutief aangeroepen
     public Kaarten getLogica3rdBot(List<Kaarten> slag) {
-        System.out.println("ENIGE FOUT: ik heb optiekaarten:"+ optiekaarten.size());
+//        System.out.println("ENIGE FOUT: ik heb optiekaarten:"+ optiekaarten.size());
         Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
         Kaarten teammateKaart = teammate.getGelegdeKaart();
         if (teammateKaart== null){
@@ -361,8 +361,16 @@ public class Bot {
                         hoogsteKaart = optiekaarten.get(i);
                         if (hoogsteKaart.getNummer()==14){
                             gelegdeKaart=hoogsteKaart;
+                        } else {
+                            verwijderdekaarten.add(optiekaarten.get(i));
+                            optiekaarten.remove(i);
+                            i--;
                         }
                     }
+                    Collections.sort(verwijderdekaarten, Kaarten.nummerComparator);
+                    gelegdeKaart = verwijderdekaarten.get(0);
+                } else {
+                    gelegdeKaart = optiekaarten.get(optiekaarten.size()-1);
                 }
             } else {
                 for (int i = 0; i < optiekaarten.size(); i++) {

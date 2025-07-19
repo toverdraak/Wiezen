@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -118,7 +119,13 @@ public class Wiezen extends Application {
         pas.setPrefHeight(70);
         pas.setPrefWidth(200);
         buttons.getChildren().add(pas);
-        bx = startX + 1000;
+        bx = startX + 500;
+        TextField kleurInput = new TextField();
+        kleurInput.setPromptText("kleur");
+        kleurInput.setMaxWidth(120);
+        kleurInput.setLayoutX(bx);
+        buttons.getChildren().add(kleurInput);
+        bx = startX+1000;
         Button rondes = new Button("volgende ronde");
         rondes.setFont(buttonfont);
         rondes.setLayoutX(bx);
@@ -230,7 +237,19 @@ public class Wiezen extends Application {
                 ronde++;
             }
         });
-        
+        kleurInput.setOnAction(e -> {
+            String input = kleurInput.getText().trim().toUpperCase();
+            try {
+                Color kleur = Color.web(input);
+                kaarten.setBackground(new Background(new BackgroundFill(kleur , CornerRadii.EMPTY, Insets.EMPTY)));
+                kleurInput.setText("");
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Ongeldige kleur: " + input);
+                // Optioneel: geef visuele feedback
+                kleurInput.setText("");
+                kleurInput.setPromptText("Ongeldige kleur");
+            }
+        });
         midden.getChildren().add(kaartView);
         BorderPane onderkant = new BorderPane(handView);
         onderkant.setMinHeight(200);
