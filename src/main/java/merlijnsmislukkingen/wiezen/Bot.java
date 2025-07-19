@@ -157,9 +157,15 @@ public class Bot {
         } else {
             // Geen kaarten van de gevraagde soort → willekeurige laagste kaart
 //            System.out.println("GEVAAR");
-            Collections.sort(splrdeck, Kaarten.nummerComparator);
-            gelegdeKaart = splrdeck.get(0);
-            gelegdeKaart.getInfo();
+            Collections.sort(slag, Kaarten.SlagComparator);
+            teammates.addAll(Wiezen.vragersTeam.getMembers());
+            if (teammates.contains(this)) {
+                gelegdeKaart = getLogicaCantFollow(slag);
+            } else {
+                teammates.clear();
+                teammates.addAll(Wiezen.passersTeam.getMembers());
+                gelegdeKaart = getLogicaCantFollow(slag);            
+            }
             splrdeck.remove(gelegdeKaart);
         }
 
@@ -392,6 +398,49 @@ public class Bot {
                 }
             }
         }   
+        return gelegdeKaart;
+    }
+    public Kaarten getLogicaCantFollow(List<Kaarten> slag) {
+        Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
+        Kaarten teammateKaart = teammate.getGelegdeKaart();
+        for (int i=0; i<splrdeck.size(); i++) {
+            Kaarten kaart = splrdeck.get(i);
+            if (kaart.getSoort() == detroef) {
+                optiekaarten.add(kaart);
+            }
+        }
+        if (teammateKaart== null){
+            if (optiekaarten.size()>0) {
+                gelegdeKaart = optiekaarten.get(0);
+            } else {
+                Collections.sort(splrdeck, Kaarten.nummerComparator);
+                gelegdeKaart = splrdeck.get(0);
+            }
+        } else if (slag.get(0).equals(teammateKaart)) {
+            if (slag.size()>2){
+                Collections.sort(splrdeck, Kaarten.nummerComparator);
+                gelegdeKaart = splrdeck.get(0);
+            } else if (slag.get(0).getNummer()>10) {
+// if hoogste van soort {
+                Collections.sort(splrdeck, Kaarten.nummerComparator);
+                gelegdeKaart = splrdeck.get(0);
+            } else {
+                if (optiekaarten.size()>0) {
+                    gelegdeKaart = optiekaarten.get(0);
+                } else {
+                    Collections.sort(splrdeck, Kaarten.nummerComparator);
+                    gelegdeKaart = splrdeck.get(0);
+                }
+            }
+                    
+        } else {
+            if (optiekaarten.size()>0) {
+                gelegdeKaart = optiekaarten.get(0);
+            } else {
+                Collections.sort(splrdeck, Kaarten.nummerComparator);
+                gelegdeKaart = splrdeck.get(0);
+            }
+        }
         return gelegdeKaart;
     }
 }
