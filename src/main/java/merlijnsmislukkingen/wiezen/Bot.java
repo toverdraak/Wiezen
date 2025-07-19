@@ -102,7 +102,8 @@ public class Bot {
         x = 0;
     }
 
-    public void legKaart(Group midden, Kaarten eersteKaart, List<Kaarten> slag) {
+    public void legKaart(Group midden, Kaarten eersteKaart, List<Kaarten> slag) {;
+        verwijderdekaarten.clear();
         Text kaart2speler = new Text(this.getName());
         if (this.isteammate) {
             kaart2speler.setText(this.getName() + "(team)");
@@ -112,10 +113,11 @@ public class Bot {
         for (Kaarten kaart : new ArrayList<>(splrdeck)) {
             if (kaart.getSoort().equals(eersteKaart.getSoort())) {
                 optiekaarten.add(kaart);
+                System.out.println("deze kaart wordt toegevoegd:" +kaart.getInfo());
             }
         }
         Random random = new Random();
-
+        
         if (!optiekaarten.isEmpty()) {
             if (slag.size() == 3) {
                 Collections.sort(slag, Kaarten.SlagComparator);
@@ -138,9 +140,7 @@ public class Bot {
                     teammates.addAll(Wiezen.passersTeam.getMembers());
                     gelegdeKaart = getLogica3rdBot(slag);
                 }
-                System.out.println("deleting");
                 splrdeck.remove(gelegdeKaart);
-                System.out.println(splrdeck.size());
             } 
             else {
                 Collections.sort(slag, Kaarten.SlagComparator);
@@ -156,14 +156,17 @@ public class Bot {
             }
         } else {
             // Geen kaarten van de gevraagde soort → willekeurige laagste kaart
+            System.out.println("GEVAAR");
             Collections.sort(splrdeck, Kaarten.nummerComparator);
             gelegdeKaart = splrdeck.get(0);
+            gelegdeKaart.getInfo();
             splrdeck.remove(gelegdeKaart);
         }
 
         // Voeg afgelegde kaart toe aan slag
+//        System.out.println("legkaart, voeg "+gelegdeKaart+" toe aan " + slag+", size was "+slag.size());
         slag.add(gelegdeKaart);
-
+//        System.out.println("legkaart, en nu size = "+slag.size());
         // Teken afbeelding
         String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
@@ -176,14 +179,11 @@ public class Bot {
 
         midden.getChildren().add(mid);
         midden.getChildren().add(kaart2speler);
-        System.out.println("hvl kaarten in slag " + slag.size());
-        if (slag.size()==4) {
-            System.out.println("dit gebeurt");
-            gelegdeKaarten.addAll(slag);
-        }
+        System.out.println("aantal kaarten over: " + splrdeck.size());
     }
 
     public void legEersteKaart(Group midden, List slag) {
+        verwijderdekaarten.clear();
         Text kaart2speler = new Text(this.getName());
         if (this.isteammate) {
             kaart2speler.setText(this.getName() + "(team)");
@@ -236,12 +236,15 @@ public class Bot {
         return isteammate;
     }
 // klass om fout op te sporen (later nog nuttig??)
+    public static void setGelegdeKaarten(List<Kaarten> slag) {
+        gelegdeKaarten.addAll(slag);
+    }
     public static void getGelegdeKaarten() {
-        System.out.println(gelegdeKaarten.size());
-        for (int i = 0; i<gelegdeKaarten.size(); i++) {
-            System.out.println(gelegdeKaarten.get(i).getNummer()+" van " + gelegdeKaarten.get(i).getSoort());
-            System.out.println("");
-        }
+        System.out.println("aantal gelegde kaarten = " + gelegdeKaarten.size());
+//        for (int i = 0; i<gelegdeKaarten.size(); i++) {
+//            System.out.println(gelegdeKaarten.get(i).getNummer()+" van " + gelegdeKaarten.get(i).getSoort());
+//            System.out.println("");
+//        }
     }
     public Kaarten getLogicaLastBot(List<Kaarten> slag) {
         if (teammates.get(0).equals(this)) {
@@ -274,13 +277,17 @@ public class Bot {
         }
         return gelegdeKaart;
     }
+// wordt foutief aangeroepen
     public Kaarten getLogica3rdBot(List<Kaarten> slag) {
+        System.out.println("ENIGE FOUT: ik heb optiekaarten:"+ optiekaarten.size());
         Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
         Kaarten teammateKaart = teammate.getGelegdeKaart();
         if (teammateKaart== null){
+            System.out.println("teammate nog niet gelegd");
             Collections.sort(optiekaarten, Kaarten.nummerComparator);
             for (int i = 0; i < optiekaarten.size(); i++) {
                 hoogsteKaart = optiekaarten.get(i);
+                System.out.println("optiekaarten 3rd player: " +hoogsteKaart.getInfo());
                 if (Kaarten.nummerComparator.compare(hoogsteKaart, slag.get(1)) < 0) {
                     verwijderdekaarten.add(optiekaarten.get(i));
                     optiekaarten.remove(i);
@@ -297,6 +304,7 @@ public class Bot {
                 System.out.println("kan er niet boven");
             }
         } else {
+            System.out.println(teammateKaart.getInfo());
             if (slag.get(1).equals(teammatekaart)) {
                 Collections.sort(optiekaarten, Kaarten.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
@@ -348,7 +356,14 @@ public class Bot {
             if (slag.get(0).equals(teammatekaart)) {
                 Collections.sort(optiekaarten, Kaarten.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
-                System.out.println("mijn team heeft al");
+                if (teammatekaart.getNummer()>9) {
+                    for (int i = 0; i < optiekaarten.size(); i++) {
+                        hoogsteKaart = optiekaarten.get(i);
+                        if (hoogsteKaart.getNummer()==14){
+                            gelegdeKaart=hoogsteKaart;
+                        }
+                    }
+                }
             } else {
                 for (int i = 0; i < optiekaarten.size(); i++) {
                     hoogsteKaart = optiekaarten.get(i);

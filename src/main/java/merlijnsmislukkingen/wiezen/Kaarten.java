@@ -46,6 +46,9 @@ public class Kaarten implements Comparable<Kaarten>  {
     public static void setTroef(String soort) {
         troef = soort;
     }
+    public String getInfo() {
+        return (this.getSoort()+this.getNummer());
+    }
 
     boolean isTroef() {
         return (this.soort.equals(troef));

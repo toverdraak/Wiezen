@@ -95,6 +95,7 @@ public class Round  {
                             bot1.legKaart(midden, BotGekozenKaart, slag);  
                             bot2.legKaart(midden, BotGekozenKaart, slag);  
                         }
+                        Bot.setGelegdeKaarten(slag);
                         bot1.resetIsWinner();
                         bot2.resetIsWinner();
                         bot3.resetIsWinner();
@@ -135,6 +136,7 @@ public class Round  {
                     Bot winner = Round.getWinner();
                     Team winningTeam = Team.getTeamByMember(Round.getWinner());
                     winningTeam.addSlag();
+                    slag.clear();
 //                    System.out.println("Slag voor "+ winningTeam);
 //                    System.out.println(Team.puntToevoegen(Round.getWinner()));
                     welkeronde.setDisable(false);

@@ -159,7 +159,7 @@ public class Wiezen extends Application {
             vraag.setDisable(true);
             pas.setDisable(true);
             verdeelBots();
-            
+            checkTeams();
             rondes.setDisable(false);
             Round.setWinner(splr);
             splr.setIsWinner();
@@ -174,14 +174,15 @@ public class Wiezen extends Application {
             pas.setDisable(true);
             System.out.println(spelersgevraagd);
             verdeelBots();
-            
+            checkTeams();
             rondes.setDisable(false);
             Round.setWinner(splr);
             splr.setIsWinner();
             scorevragers.setText(vragersTeam.getName(0)+" & "+ vragersTeam.getName(1)+" met "+vragersTeam.getSlagen()+" slagen");
             scorepassers.setText(passersTeam.getName(0)+" & "+ passersTeam.getName(1)+" met "+passersTeam.getSlagen()+" slagen");
-            Round round1 = new Round(handView, splr1, kaartView, midden,bot1,bot2,bot3,rondes,splr);
+            Round round1 = new Round(handView, splr1, kaartView, midden, bot1, bot2, bot3, rondes, splr);
         });
+
         rondes.setOnAction(e -> {
             if (Round.getWinner() != null) {
                 Round.resetWinner();
@@ -247,6 +248,15 @@ public class Wiezen extends Application {
         stage.show();
     }
 
+    void checkTeams() {
+        int vragersCount = vragersTeam.getMembers().size();
+        System.out.println("vragers: " + vragersTeam.getMembers());
+        System.out.println("passers: " + passersTeam.getMembers());
+        if (vragersTeam.getMembers().size() != 2) {
+            System.out.println("We hebben " + vragersCount + " vragers en " + (4 - vragersCount) + " passers, dus we kunnen niet veel doen.");
+            System.exit(0);
+        }
+    }
     void updateTexts() {
         scorevragers.setText(vragersTeam.getName(0) + " & " + vragersTeam.getName(1) + " met " + vragersTeam.getSlagen() + " slagen");
         scorepassers.setText(passersTeam.getName(0) + " & " + passersTeam.getName(1) + " met " + passersTeam.getSlagen() + " slagen");
@@ -254,32 +264,35 @@ public class Wiezen extends Application {
 
     void verdeelBots() {
         boolean splr1vraag = bot1.getActie();
-            if (splr1vraag == true) {
-                System.out.println("bot1vraagt");
+        if (splr1vraag == true) {
+            System.out.println("bot1vraagt");
+            spelersgevraagd++;
+            vragersTeam.addMember(bot1);
+        } else {
+            passersTeam.addMember(bot1);
+        }
+        if (spelersgevraagd < 2) {
+            boolean splr2vraag = bot2.getActie();
+            if (splr2vraag == true) {
+                System.out.println("bot2vraagt");
                 spelersgevraagd++;
-                vragersTeam.addMember(bot1);
+                vragersTeam.addMember(bot2);
             } else {
-                passersTeam.addMember(bot1);
+                passersTeam.addMember(bot2);
             }
             if (spelersgevraagd < 2) {
-                boolean splr2vraag = bot2.getActie();
-                if (splr2vraag == true) {
-                    System.out.println("bot2vraagt");
-                    spelersgevraagd++;
-                    vragersTeam.addMember(bot2);
-                } else {
-                    passersTeam.addMember(bot2);
-                }
-                if (spelersgevraagd < 2) {
-                    boolean splr3vraag = bot3.getActie();
-                    System.out.println("bot3vraagt");
-                    spelersgevraagd++;
-                    vragersTeam.addMember(bot3);
-                } else{
-                    passersTeam.addMember(bot3);
-                }
-                
+                boolean splr3vraag = bot3.getActie();
+                System.out.println("bot3vraagt");
+                spelersgevraagd++;
+                vragersTeam.addMember(bot3);
+            } else {
+                passersTeam.addMember(bot3);
             }
+
+        } else {
+            passersTeam.addMember(bot2);
+            passersTeam.addMember(bot3);
+        }
     }
     private void createDeck() {
         String[] soorten = {"harten", "ruiten", "klaveren", "schoppen"};
