@@ -21,47 +21,47 @@ import javafx.scene.image.ImageView;
  */
 public class Round  {
 
-    public Kaarten gekozenKaart;
-    public Kaarten BotGekozenKaart;
-    public List<Kaarten> slag = new ArrayList<>();
+    public Kaart gekozenKaart;
+    public Kaart BotGekozenKaart;
+    public List<Kaart> slag = new ArrayList<>();
     public static Bot winning = new Bot(null);
-    public Round(Group handView, List<Kaarten> spelersKaarten, ImageView mid, Group midden, Bot bot1, Bot bot2, Bot bot3, Button welkeronde, Bot splr) {
+    public Round(Group handView, List<Kaart> spelersKaarten, ImageView mid, Group midden, Bot bot1, Bot bot2, Bot bot3, Button welkeronde, Bot splr, Kaarten totaalHarten, Kaarten totaalRuiten,Kaarten totaalKlaveren,Kaarten totaalSchoppen) {
         for (Node node : handView.getChildren()) {
             node.setDisable(false);
         }
         if (bot1.getIsWinner()) {
             System.out.println("bot1 komt uit");
-            bot1.legEersteKaart(midden, slag);
+            bot1.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
             bot2.legKaart(midden, BotGekozenKaart, slag);
             bot3.legKaart(midden, BotGekozenKaart, slag);
         } else if (bot2.getIsWinner()) {
             System.out.println("bot2 komt uit");
-            bot2.legEersteKaart(midden, slag);
+            bot2.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
             bot3.legKaart(midden, BotGekozenKaart, slag);          
         } else if (bot3.getIsWinner()) {
             System.out.println("bot3 komt uit");
-            bot3.legEersteKaart(midden, slag);
+            bot3.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());           
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());           
         }
         for (Node node : handView.getChildren()) {
             if (node instanceof ImageView) {
                 ImageView kaartView = (ImageView) node;
                 kaartView.setOnMouseClicked(e -> {
-                    // Zoek de juiste Kaarten-object bij dit ImageView
+                    // Zoek de juiste Kaart-object bij dit ImageView
                     int index = handView.getChildren().indexOf(kaartView);
                     if (index >= 0 && index < spelersKaarten.size()) {
                         if (splr.getIsWinner()) {
                             System.out.println("speler komt uit");
                             this.gekozenKaart = spelersKaarten.get(index);
                             splr.setGelegdeKaart(gekozenKaart);
-                            Kaarten.setUitgekomenSoort(gekozenKaart.getSoort());
+                            Kaart.setUitgekomenSoort(gekozenKaart.getSoort());
                         } else {
-                            Kaarten gekozen = spelersKaarten.get(index);
+                            Kaart gekozen = spelersKaarten.get(index);
                             boolean heeftSoortNog = spelersKaarten.stream().anyMatch(k -> k.getSoort().equals(BotGekozenKaart.getSoort()));
                             if (!gekozen.getSoort().equals(BotGekozenKaart.getSoort()) && heeftSoortNog) {
                                 // Speler speelt verkeerde kleur terwijl hij het wel heeft
@@ -69,7 +69,7 @@ public class Round  {
                                 return; // Stop verwerking
                             } else {
                                 this.gekozenKaart = gekozen;
-                                Kaarten.setUitgekomenSoort(BotGekozenKaart.getSoort());
+                                Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
                             splr.setGelegdeKaart(gekozenKaart);
                         }
                         }
@@ -95,7 +95,11 @@ public class Round  {
                             bot1.legKaart(midden, BotGekozenKaart, slag);  
                             bot2.legKaart(midden, BotGekozenKaart, slag);  
                         }
-                        Bot.setGelegdeKaarten(slag);
+                        Kaarten.setGelegdeKaarten(slag);
+                        totaalHarten.updateGebruikteKaarten(slag);
+                        totaalRuiten.updateGebruikteKaarten(slag);
+                        totaalKlaveren.updateGebruikteKaarten(slag);
+                        totaalSchoppen.updateGebruikteKaarten(slag);
                         bot1.resetIsWinner();
                         bot2.resetIsWinner();
                         bot3.resetIsWinner();
@@ -106,8 +110,8 @@ public class Round  {
                         for (Node n : handView.getChildren()) {
                             n.setDisable(true);
                         }
-                        Collections.sort(slag, Kaarten.SlagComparator);
-                        Kaarten winnende = slag.get(3);
+                        Collections.sort(slag, Kaart.SlagComparator);
+                        Kaart winnende = slag.get(3);
                         if (gekozenKaart == winnende) {
                             Wiezen.setSpelerWinner();
                             Round.setWinner(splr);
@@ -146,14 +150,16 @@ public class Round  {
 
     }
 
-    public Kaarten getGekozenKaart() {
+    public Kaart getGekozenKaart() {
         return this.gekozenKaart;
     }
     public static void setWinner(Bot bot1) {
         winning = bot1;
         winning.setName(bot1.getName());
         winning.setId(bot1.getId());
-        System.out.println("de winnaar"+winning.getId());
+        System.out.println("");
+        System.out.println("de winnaar = " +winning.getId());
+        System.out.println("");
     }
     public static Bot getWinner() {
         return winning;

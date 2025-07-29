@@ -31,13 +31,16 @@ import javafx.stage.Stage;
  */
 public class Wiezen extends Application {
 
-    private final List<Kaarten> deck = new ArrayList<>();
-    private final List<Kaarten> splr1 = new ArrayList<>();
-    private final List<Kaarten> splr2 = new ArrayList<>();
-    private final List<Kaarten> splr3 = new ArrayList<>();
-    private final List<Kaarten> splr4 = new ArrayList<>();
+    private final List<Kaart> deck = new ArrayList<>();
+    private final List<Kaart> splr1 = new ArrayList<>();
+    private final List<Kaart> splr2 = new ArrayList<>();
+    private final List<Kaart> splr3 = new ArrayList<>();
+    private final List<Kaart> splr4 = new ArrayList<>();
     public String troef;
-
+    public Kaarten totaalHarten = new Kaarten("harten");
+    public Kaarten totaalRuiten = new Kaarten("ruiten");
+    public Kaarten totaalKlaveren = new Kaarten("klaveren");
+    public Kaarten totaalSchoppen = new Kaarten("schoppen");
     public int spelersgevraagd;
     Font buttonfont = new Font(20);
     private boolean actie;
@@ -57,10 +60,10 @@ public class Wiezen extends Application {
     public void start(Stage stage) throws Exception {
         BorderPane kaarten = new BorderPane();
         createDeck();
-        Kaarten troefkaart = randomCard();
+        Kaart troefkaart = randomCard();
         String troefkaartsoort = troefkaart.getSoort();
         setTroef(troefkaartsoort);
-        Kaarten.setTroef(troefkaartsoort);
+        Kaart.setTroef(troefkaartsoort);
         Bot.setTroef(troefkaartsoort);
         int nrtroefkaart = troefkaart.getNummer();
         
@@ -137,7 +140,7 @@ public class Wiezen extends Application {
         int middenvan = splr1.size() / 2;
 
         for (int i = 0; i < splr1.size(); i++) {
-            Kaarten kaart = splr1.get(i);
+            Kaart kaart = splr1.get(i);
             String soort = kaart.getSoort();
             int nr = kaart.getNummer();
             String location = "/" + soort + nr + ".png";
@@ -170,8 +173,9 @@ public class Wiezen extends Application {
             rondes.setDisable(false);
             Round.setWinner(splr);
             splr.setIsWinner();
+            passersTeam.getMembers().get(1).setTeammate();
             scorepassers.setText(passersTeam.getName(0)+" & "+ passersTeam.getName(1)+" met "+passersTeam.getSlagen()+" slagen");
-            Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3,rondes, splr);
+            Round round1 = new Round(handView, splr1, kaartView, midden, bot1,bot2,bot3,rondes, splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
         });
         vraag.setOnAction(e -> {
             vragersTeam.addMember(splr);
@@ -185,9 +189,10 @@ public class Wiezen extends Application {
             rondes.setDisable(false);
             Round.setWinner(splr);
             splr.setIsWinner();
+            vragersTeam.getMembers().get(1).setTeammate();
             scorevragers.setText(vragersTeam.getName(0)+" & "+ vragersTeam.getName(1)+" met "+vragersTeam.getSlagen()+" slagen");
             scorepassers.setText(passersTeam.getName(0)+" & "+ passersTeam.getName(1)+" met "+passersTeam.getSlagen()+" slagen");
-            Round round1 = new Round(handView, splr1, kaartView, midden, bot1, bot2, bot3, rondes, splr);
+            Round round1 = new Round(handView, splr1, kaartView, midden, bot1, bot2, bot3, rondes, splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
         });
 
         rondes.setOnAction(e -> {
@@ -196,44 +201,44 @@ public class Wiezen extends Application {
                 rondes.setDisable(true);
                 midden.getChildren().clear();
                 if (ronde == 12){
-                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
-                    Bot.getGelegdeKaarten();
+                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
+                    Kaarten.getGelegdeKaarten();
                 }
                 if (ronde == 11){
-                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round12 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 10){
-                    Round round11 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round11 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 9){
-                    Round round10 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round10 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 8){
-                    Round round9 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round9 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 7){
-                    Round round8 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round8 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 6){
-                    Round round7 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round7 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 5){
-                    Round round6 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round6 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 4){
-                    Round round5 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round5 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 3){
-                    Round round4 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round4 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 2){
-                    Round round3 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round3 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 if (ronde == 1){
-                    Round round2 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr);
+                    Round round2 = new Round(handView,splr1,kaartView,midden,bot1,bot2,bot3,rondes,splr,totaalHarten, totaalRuiten,totaalKlaveren,totaalSchoppen);
                 }
                 updateTexts();
-                Bot.getGelegdeKaarten();
+                Kaarten.getGelegdeKaarten();
                 ronde++;
             }
         });
@@ -319,7 +324,7 @@ public class Wiezen extends Application {
 
         for (String soort : soorten) {
             for (int waarde : waardes) {
-                Kaarten kaart = new Kaarten(soort, waarde);
+                Kaart kaart = new Kaart(soort, waarde);
                 deck.add(kaart);
             }
         }
@@ -340,7 +345,7 @@ public class Wiezen extends Application {
 
     }
 
-    private Kaarten randomCard() {
+    private Kaart randomCard() {
         Random rkaart = new Random();
         int randomkaart = rkaart.nextInt(53);
         return deck.get(randomkaart);
