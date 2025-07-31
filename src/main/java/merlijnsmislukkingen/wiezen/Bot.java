@@ -193,15 +193,27 @@ public class Bot {
             kaart2speler.setText(this.getName() + "(team)");
         }
         kaart2speler.setY(0); 
-//        String troef = Kaart.getTroef();
-//        if (totaalHarten.getName()==troef) {
-//            totaalHarten
-//        }
-        Random eersterandom = new Random();
-        int keuze = eersterandom.nextInt(splrdeck.size());
-        gelegdeKaart = splrdeck.remove(keuze);
-        slag.add(gelegdeKaart);
-
+        teammates.clear();
+        teammates.addAll(Wiezen.vragersTeam.getMembers());
+        if (teammates.contains(this)) {
+            System.out.println("vragers");
+            if (totaalHarten.getIstroef()){
+                gelegdeKaart = legEersteVraagKaart(totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen,slag);
+            } else if (totaalRuiten.getIstroef()){
+                gelegdeKaart = legEersteVraagKaart(totaalRuiten,totaalKlaveren,totaalSchoppen,totaalHarten,slag);                
+            } else if (totaalKlaveren.getIstroef()){
+                gelegdeKaart = legEersteVraagKaart(totaalKlaveren,totaalSchoppen,totaalHarten,totaalRuiten,slag);    
+            } else if (totaalSchoppen.getIstroef()){
+                gelegdeKaart = legEersteVraagKaart(totaalSchoppen,totaalHarten,totaalRuiten,totaalKlaveren,slag);                
+            }
+            
+        } else {
+            System.out.println("passer");
+            Random eersterandom = new Random();
+            int keuze = eersterandom.nextInt(splrdeck.size());
+            gelegdeKaart = splrdeck.remove(keuze);
+            slag.add(gelegdeKaart);
+        }
         // Teken afbeelding
         String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
@@ -215,7 +227,14 @@ public class Bot {
         midden.getChildren().add(mid);
         midden.getChildren().add(kaart2speler);
     }
-
+    public Kaart legEersteVraagKaart(Kaarten totaalTroef,Kaarten totaal2, Kaarten totaal3, Kaarten totaal4,List slag){
+        System.out.println("totaaltroef over:"+totaalTroef.kaartenDezeSoort.size());
+        Random eersterandom = new Random();
+        int keuze = eersterandom.nextInt(splrdeck.size());
+        gelegdeKaart = splrdeck.remove(keuze);
+        slag.add(gelegdeKaart);
+        return gelegdeKaart;
+    }
     public void setGelegdeKaart(Kaart kaart) {
         this.gelegdeKaart = kaart;
     }
@@ -249,6 +268,9 @@ public class Bot {
 //            System.out.println("");
 //        }
     public Kaart getLogicaLastBot(List<Kaart> slag) {
+        System.out.println("");
+        System.out.println("4");
+        System.out.println("");
         if (teammates.get(0).equals(this)) {
             teammatekaart = teammates.get(1).getGelegdeKaart();
         } else {
@@ -281,11 +303,14 @@ public class Bot {
     }
 // wordt foutief aangeroepen
     public Kaart getLogica3rdBot(List<Kaart> slag) {
+        System.out.println("");
+        System.out.println("3rd");
+        System.out.println("");
 //        System.out.println("ENIGE FOUT: ik heb optiekaarten:"+ optiekaarten.size());
         Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
+        System.out.println("3 "+ teammate.getName());
         Kaart teammateKaart = teammate.getGelegdeKaart();
         if (teammateKaart== null){
-            System.out.println("teammate nog niet gelegd");
             Collections.sort(optiekaarten, Kaart.nummerComparator);
             for (int i = 0; i < optiekaarten.size(); i++) {
                 hoogsteKaart = optiekaarten.get(i);
@@ -307,6 +332,7 @@ public class Bot {
             }
         } else {
             System.out.println(teammateKaart.getInfo());
+            System.out.println(slag.get(1).getInfo());
             if (slag.get(1).equals(teammatekaart)) {
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
@@ -333,9 +359,14 @@ public class Bot {
         return gelegdeKaart;
     }
     public Kaart getLogica2ndBot(List<Kaart> slag) {
+        System.out.println("");
+        System.out.println("2");
+        System.out.println("");
         Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
+        System.out.println("2 "+teammate.getName());
         Kaart teammateKaart = teammate.getGelegdeKaart();
         if (teammateKaart== null){
+            System.out.println("teammate is niet de eerste");
             Collections.sort(optiekaarten, Kaart.nummerComparator);
             for (int i = 0; i < optiekaarten.size(); i++) {
                 hoogsteKaart = optiekaarten.get(i);
@@ -356,13 +387,16 @@ public class Bot {
             }
         } else {
             if (slag.get(0).equals(teammateKaart)) {
+                System.out.println("teammate heeft");
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
                 if (teammateKaart.getNummer()>9) {
+                    System.out.println("hoog genoeg blijf eraf");
                     for (int i = 0; i < optiekaarten.size(); i++) {
                         hoogsteKaart = optiekaarten.get(i);
                         if (hoogsteKaart.getNummer()==14){
                             gelegdeKaart=hoogsteKaart;
+                            return gelegdeKaart;
                         } else {
                             verwijderdekaarten.add(optiekaarten.get(i));
                             optiekaarten.remove(i);
@@ -372,6 +406,7 @@ public class Bot {
                     Collections.sort(verwijderdekaarten, Kaart.nummerComparator);
                     gelegdeKaart = verwijderdekaarten.get(0);
                 } else {
+                    System.out.println("niet hoog genoeg");
                     gelegdeKaart = optiekaarten.get(optiekaarten.size()-1);
                 }
             } else {
@@ -397,6 +432,7 @@ public class Bot {
     }
     public Kaart getLogicaCantFollow(List<Kaart> slag) {
         Bot teammate = teammates.get(0).equals(this) ? teammates.get(1) : teammates.get(0);
+        System.out.println("kan niet volgen "+teammate.getName());
         Kaart teammateKaart = teammate.getGelegdeKaart();
         for (int i=0; i<splrdeck.size(); i++) {
             Kaart kaart = splrdeck.get(i);

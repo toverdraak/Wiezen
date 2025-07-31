@@ -17,6 +17,7 @@ public class Kaarten {
     public List<Kaart> kaartenDezeSoort = new ArrayList<>();
     private String name;
     private Kaart hoogste;
+    public boolean isSoortTroef;
     public Kaarten(String soort) {
         this.setName(soort);
         for (int i = 2; i<15; i++) {
@@ -27,7 +28,13 @@ public class Kaarten {
     public void setName(String naamsoort) {
         this.name = naamsoort;
     }
-
+    public void setIstroef(){
+        Kaart testKaart = kaartenDezeSoort.get(0);
+        isSoortTroef = kaartenDezeSoort.get(0).isTroef();
+    }
+    public boolean getIstroef() {
+        return isSoortTroef;
+    }
     public String getName() {
         return name;
     }

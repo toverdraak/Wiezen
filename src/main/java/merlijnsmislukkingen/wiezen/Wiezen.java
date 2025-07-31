@@ -66,7 +66,10 @@ public class Wiezen extends Application {
         Kaart.setTroef(troefkaartsoort);
         Bot.setTroef(troefkaartsoort);
         int nrtroefkaart = troefkaart.getNummer();
-        
+        totaalHarten.setIstroef();
+        totaalRuiten.setIstroef();
+        totaalKlaveren.setIstroef();
+        totaalSchoppen.setIstroef();
         
         scorevragers.setFont(buttonfont);
         scorepassers.setFont(buttonfont);
