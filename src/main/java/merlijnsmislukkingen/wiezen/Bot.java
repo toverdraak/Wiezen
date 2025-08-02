@@ -36,7 +36,7 @@ public class Bot {
     private boolean iswinner = false;
     private int bid;
     public boolean isteammate = false;
-    private Kaart teammatekaart;
+    private Kaart teammateKaart;
     public Kaart hoogsteKaart;
 
     public Bot(String naam) {
@@ -272,11 +272,11 @@ public class Bot {
         System.out.println("4");
         System.out.println("");
         if (teammates.get(0).equals(this)) {
-            teammatekaart = teammates.get(1).getGelegdeKaart();
+            teammateKaart = teammates.get(1).getGelegdeKaart();
         } else {
-            teammatekaart = teammates.get(0).getGelegdeKaart();
+            teammateKaart = teammates.get(0).getGelegdeKaart();
         }
-        if (slag.get(2).getInfo()==teammatekaart.getInfo()) {
+        if (slag.get(2).getInfo().equals(teammateKaart.getInfo())) {
             Collections.sort(optiekaarten, Kaart.nummerComparator);
             gelegdeKaart = optiekaarten.get(0);
             System.out.println("mijn team heeft al");
@@ -333,7 +333,7 @@ public class Bot {
         } else {
             System.out.println(teammateKaart.getInfo());
             System.out.println(slag.get(1).getInfo());
-            if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
+            if (slag.get(1).getInfo().equals(teammateKaart.getInfo())) {
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
                 System.out.println("mijn team heeft al");
@@ -386,7 +386,7 @@ public class Bot {
                 System.out.println("kan er niet boven");
             }
         } else {
-            if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
+            if (slag.get(0).getInfo().equals(teammateKaart.getInfo())) {
                 System.out.println("teammate heeft");
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
@@ -437,29 +437,35 @@ public class Bot {
         Kaart teammateKaart = teammate.getGelegdeKaart();
         for (int i=0; i<splrdeck.size(); i++) {
             Kaart kaart = splrdeck.get(i);
-            if (kaart.getSoort() == detroef) {
+            if (kaart.getSoort().equals(detroef)) {
                 optiekaarten.add(kaart);
             }
         }
         if (teammateKaart== null){
             if (optiekaarten.size()>0) {
                 gelegdeKaart = optiekaarten.get(0);
+                System.out.println("ik koop op voorhand");
             } else {
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
+                System.out.println("kan nie tkopen");
             }
-        } else if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
+        } else if (slag.get(0).getInfo().equals(this.teammateKaart.getInfo())) {
             if (slag.size()>2){
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
+                System.out.println("teammate heeft ik leg laag");
             } else if (slag.get(0).getNummer()>10) {
 // if hoogste van soort {
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
+                System.out.println("teammate heeft hoger dan 10 ik leg laag");
             } else {
                 if (optiekaarten.size()>0) {
+                    System.out.println("Teammate ligt voor maar met lage kaart, ik koop");
                     gelegdeKaart = optiekaarten.get(0);
                 } else {
+                    System.out.println("Teammate heeft niet maar ik heb geen troef");
                     Collections.sort(splrdeck, Kaart.nummerComparator);
                     gelegdeKaart = splrdeck.get(0);
                 }
@@ -467,8 +473,10 @@ public class Bot {
                     
         } else {
             if (optiekaarten.size()>0) {
+                System.out.println("teammate heeft niet dus ik koop");
                 gelegdeKaart = optiekaarten.get(0);
             } else {
+                System.out.println("teammateheeft niet maar ik kan niet kopen");
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
             }
