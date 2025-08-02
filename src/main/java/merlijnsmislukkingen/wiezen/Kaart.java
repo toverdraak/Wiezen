@@ -112,7 +112,7 @@ public class Kaart implements Comparable<Kaart>  {
                 }
             } else{
                 if (k2.isTroef()) {
-                    return -1;
+                    return-1;
                 } else {
                     if (k1.isUitgekomenSoort()){
                         if (k2.isUitgekomenSoort()) {
@@ -137,5 +137,17 @@ public class Kaart implements Comparable<Kaart>  {
             return Integer.compare(k.nummer, c.nummer);
         }
     };
-        
+//    @Override
+//    public boolean equals(Object k1) {
+//        if (this.getSoort == k1.getSoort) {
+//            if (this.getNummer == k1.getNummer){
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+//    }
+//        
 }

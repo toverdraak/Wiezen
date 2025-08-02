@@ -276,7 +276,7 @@ public class Bot {
         } else {
             teammatekaart = teammates.get(0).getGelegdeKaart();
         }
-        if (slag.get(2).equals(teammatekaart)) {
+        if (slag.get(2).getInfo()==teammatekaart.getInfo()) {
             Collections.sort(optiekaarten, Kaart.nummerComparator);
             gelegdeKaart = optiekaarten.get(0);
             System.out.println("mijn team heeft al");
@@ -333,7 +333,7 @@ public class Bot {
         } else {
             System.out.println(teammateKaart.getInfo());
             System.out.println(slag.get(1).getInfo());
-            if (slag.get(1).equals(teammatekaart)) {
+            if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
                 System.out.println("mijn team heeft al");
@@ -386,10 +386,11 @@ public class Bot {
                 System.out.println("kan er niet boven");
             }
         } else {
-            if (slag.get(0).equals(teammateKaart)) {
+            if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
                 System.out.println("teammate heeft");
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 gelegdeKaart = optiekaarten.get(0);
+                System.out.println(teammateKaart.getNummer());
                 if (teammateKaart.getNummer()>9) {
                     System.out.println("hoog genoeg blijf eraf");
                     for (int i = 0; i < optiekaarten.size(); i++) {
@@ -447,7 +448,7 @@ public class Bot {
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
             }
-        } else if (slag.get(0).equals(teammateKaart)) {
+        } else if (slag.get(1).getInfo()==teammatekaart.getInfo()) {
             if (slag.size()>2){
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
