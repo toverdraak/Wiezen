@@ -206,7 +206,7 @@ public class Bot {
             } else if (totaalSchoppen.getIstroef()){
                 gelegdeKaart = legEersteVraagKaart(totaalSchoppen,totaalHarten,totaalRuiten,totaalKlaveren,slag);                
             }
-            
+            slag.add(gelegdeKaart);
         } else {
             System.out.println("passer");
             Random eersterandom = new Random();
@@ -231,6 +231,7 @@ public class Bot {
         System.out.println("totaaltroef over:"+totaalTroef.kaartenDezeSoort.size());
         optiekaarten.clear();
         if (totaalTroef.kaartenDezeSoort.size()>0) {
+            System.out.println("er is nog troef");
             troefamount=0;
             for (int i = 0; i<splrdeck.size(); i++) {
                 gelegdeKaart = splrdeck.get(i);
@@ -240,18 +241,25 @@ public class Bot {
                 }
             }
             if (totaalTroef.kaartenDezeSoort.size()>2*troefamount) {
+                System.out.println("er is nog teveel troef");
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 if (optiekaarten.get(optiekaarten.size()-1).getNummer()==(totaalTroef.getHoogste().getNummer())){
                     gelegdeKaart = optiekaarten.getLast();
                 } else {
                     gelegdeKaart = optiekaarten.getFirst();
                 }
+            } else {
+                Random eersterandom = new Random();
+                int keuze = eersterandom.nextInt(splrdeck.size());
+                gelegdeKaart = splrdeck.remove(keuze);
+                slag.add(gelegdeKaart);
             }
-        }       
-        Random eersterandom = new Random();
-        int keuze = eersterandom.nextInt(splrdeck.size());
-        gelegdeKaart = splrdeck.remove(keuze);
-        slag.add(gelegdeKaart);
+        }   else {
+            Random eersterandom = new Random();
+            int keuze = eersterandom.nextInt(splrdeck.size());
+            gelegdeKaart = splrdeck.remove(keuze);
+            slag.add(gelegdeKaart);
+        }    
         return gelegdeKaart;
     }
     public void setGelegdeKaart(Kaart kaart) {
