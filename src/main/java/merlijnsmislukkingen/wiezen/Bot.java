@@ -229,6 +229,25 @@ public class Bot {
     }
     public Kaart legEersteVraagKaart(Kaarten totaalTroef,Kaarten totaal2, Kaarten totaal3, Kaarten totaal4,List slag){
         System.out.println("totaaltroef over:"+totaalTroef.kaartenDezeSoort.size());
+        optiekaarten.clear();
+        if (totaalTroef.kaartenDezeSoort.size()>0) {
+            troefamount=0;
+            for (int i = 0; i<splrdeck.size(); i++) {
+                gelegdeKaart = splrdeck.get(i);
+                if (gelegdeKaart.getSoort().equals(totaalTroef.getName())) {
+                    troefamount++;
+                    optiekaarten.add(gelegdeKaart);
+                }
+            }
+            if (totaalTroef.kaartenDezeSoort.size()>2*troefamount) {
+                Collections.sort(optiekaarten, Kaart.nummerComparator);
+                if (optiekaarten.get(optiekaarten.size()-1).getNummer()==(totaalTroef.getHoogste().getNummer())){
+                    gelegdeKaart = optiekaarten.getLast();
+                } else {
+                    gelegdeKaart = optiekaarten.getFirst();
+                }
+            }
+        }       
         Random eersterandom = new Random();
         int keuze = eersterandom.nextInt(splrdeck.size());
         gelegdeKaart = splrdeck.remove(keuze);
@@ -450,7 +469,7 @@ public class Bot {
                 gelegdeKaart = splrdeck.get(0);
                 System.out.println("kan nie tkopen");
             }
-        } else if (slag.get(0).getInfo().equals(this.teammateKaart.getInfo())) {
+        } else if (slag.get(slag.size()-1).getInfo().equals(this.teammateKaart.getInfo())) {
             if (slag.size()>2){
                 Collections.sort(splrdeck, Kaart.nummerComparator);
                 gelegdeKaart = splrdeck.get(0);
