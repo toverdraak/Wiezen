@@ -207,6 +207,7 @@ public class Bot {
                 gelegdeKaart = legEersteVraagKaart(totaalSchoppen,totaalHarten,totaalRuiten,totaalKlaveren,slag);                
             }
             slag.add(gelegdeKaart);
+            splrdeck.remove(gelegdeKaart);
         } else {
             System.out.println("passer");
             Random eersterandom = new Random();
