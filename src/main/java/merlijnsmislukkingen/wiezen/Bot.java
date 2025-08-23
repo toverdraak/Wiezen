@@ -210,9 +210,7 @@ public class Bot {
             splrdeck.remove(gelegdeKaart);
         } else {
             System.out.println("passer");
-            Random eersterandom = new Random();
-            int keuze = eersterandom.nextInt(splrdeck.size());
-            gelegdeKaart = splrdeck.remove(keuze);
+            gelegdeKaart = legEersteKaartNormaal(totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen,slag);
             slag.add(gelegdeKaart);
         }
         // Teken afbeelding
@@ -250,18 +248,39 @@ public class Bot {
                     gelegdeKaart = optiekaarten.getFirst();
                 }
             } else {
-                Random eersterandom = new Random();
-                int keuze = eersterandom.nextInt(splrdeck.size());
-                gelegdeKaart = splrdeck.remove(keuze);
-                slag.add(gelegdeKaart);
+                legEersteKaartNormaal(totaalTroef,totaal2,totaal3,totaal4,slag);
             }
         }   else {
-            Random eersterandom = new Random();
-            int keuze = eersterandom.nextInt(splrdeck.size());
-            gelegdeKaart = splrdeck.remove(keuze);
-            slag.add(gelegdeKaart);
+            legEersteKaartNormaal(totaalTroef,totaal2,totaal3,totaal4,slag);
         }    
         return gelegdeKaart;
+    }
+    public Kaart legEersteKaartNormaal(Kaarten totaal1, Kaarten totaal2, Kaarten totaal3, Kaarten totaal4, List Slag) {
+        gelegdeKaart = null;
+        Kaart hoogsteKaart = totaal1.heeftHoogste(splrdeck);
+        if (hoogsteKaart != null){
+            gelegdeKaart = hoogsteKaart;
+            return gelegdeKaart;
+        }
+        hoogsteKaart = totaal2.heeftHoogste(splrdeck);
+        if (hoogsteKaart != null){
+            gelegdeKaart = hoogsteKaart;
+            return gelegdeKaart;
+        }
+        hoogsteKaart = totaal3.heeftHoogste(splrdeck);
+        if (hoogsteKaart != null){
+            gelegdeKaart = hoogsteKaart;
+            return gelegdeKaart;
+        }
+        hoogsteKaart = totaal4.heeftHoogste(splrdeck);
+        if (hoogsteKaart != null){
+            gelegdeKaart = hoogsteKaart;
+            return gelegdeKaart;
+        }
+        else {
+            gelegdeKaart = splrdeck.get(0);
+            return gelegdeKaart;
+        }
     }
     public void setGelegdeKaart(Kaart kaart) {
         this.gelegdeKaart = kaart;

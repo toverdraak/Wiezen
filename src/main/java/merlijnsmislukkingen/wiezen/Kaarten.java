@@ -66,4 +66,15 @@ public class Kaarten {
     public Kaart getHoogste() {
         return hoogste;
     }
+    public Kaart heeftHoogste(List<Kaart> splrhand) {
+        for (int i = 0; i<splrhand.size()-1;i++) {
+            if (splrhand.get(i).getSoort().equals(name)) {
+                if (splrhand.get(i).getNummer()==this.getHoogste().getNummer()) {
+                    splrhand.remove(i)
+;                   return splrhand.get(i);
+                }
+            }
+        }
+        return null;
+    }
 }
