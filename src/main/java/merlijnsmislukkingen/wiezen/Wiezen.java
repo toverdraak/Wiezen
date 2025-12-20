@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.merlijn.wiezen.Spel;
 
 /**
  *
@@ -58,6 +59,8 @@ public class Wiezen extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Spel spel = new Spel();
+        spel.speelSpel();
         BorderPane kaarten = new BorderPane();
         createDeck();
         Kaart troefkaart = randomCard();

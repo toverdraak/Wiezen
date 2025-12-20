@@ -13,6 +13,10 @@ import java.util.List;
  * @author merlijn
  */
 public class Kaart implements Comparable<Kaart>  {
+    
+    public enum SOORT {HARTEN, RUITEN, KLAVEREN, SCHOPPEN};
+    
+    private SOORT kaartSoort;
     private String soort;
     private int nummer;
     private static String troef;
@@ -27,6 +31,11 @@ public class Kaart implements Comparable<Kaart>  {
         SOORT_VOLGORDE.add("schoppen");
     }
     
+    public Kaart(SOORT soort, int nummer) {
+        this.kaartSoort = soort;
+        this.nummer = nummer;
+    }
+
     public Kaart(String soort, int nummer) {
         this.soort = soort;
         this.nummer = nummer;
@@ -137,6 +146,8 @@ public class Kaart implements Comparable<Kaart>  {
             return Integer.compare(k.nummer, c.nummer);
         }
     };
+    
+    
 //    @Override
 //    public boolean equals(Object k1) {
 //        if (this.getSoort == k1.getSoort) {
@@ -150,4 +161,9 @@ public class Kaart implements Comparable<Kaart>  {
 //        }
 //    }
 //        
+
+    @Override
+    public String toString() {
+        return "Kaart{" + "kaartSoort=" + kaartSoort + ", nummer=" + nummer + '}';
+    }
 }
