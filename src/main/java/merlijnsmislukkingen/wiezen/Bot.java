@@ -229,7 +229,7 @@ public class Bot {
         midden.getChildren().add(kaart2speler);
     }
     public Kaart legEersteVraagKaart(Kaarten totaalTroef,Kaarten totaal2, Kaarten totaal3, Kaarten totaal4,List slag){
-        System.out.println("totaaltroef over:"+totaalTroef.kaartenDezeSoort.size());
+        //System.out.println("totaaltroef over:"+totaalTroef.kaartenDezeSoort.size());
         optiekaarten.clear();
         if (totaalTroef.kaartenDezeSoort.size()>0) {
             System.out.println("er is nog troef");
@@ -241,7 +241,7 @@ public class Bot {
                     optiekaarten.add(gelegdeKaart);
                 }
             }
-            if (totaalTroef.kaartenDezeSoort.size()>2*troefamount) {
+            if ((totaalTroef.kaartenDezeSoort.size()>2*troefamount) && (optiekaarten.size()>0)) {
                 System.out.println("er is nog teveel troef");
                 Collections.sort(optiekaarten, Kaart.nummerComparator);
                 if (optiekaarten.get(optiekaarten.size()-1).getNummer()==(totaalTroef.getHoogste().getNummer())){
