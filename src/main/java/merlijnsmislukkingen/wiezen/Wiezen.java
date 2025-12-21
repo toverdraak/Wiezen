@@ -64,10 +64,10 @@ public class Wiezen extends Application {
         BorderPane kaarten = new BorderPane();
         createDeck();
         Kaart troefkaart = randomCard();
-        String troefkaartsoort = troefkaart.getSoort();
-        setTroef(troefkaartsoort);
-        Kaart.setTroef(troefkaartsoort);
-        Bot.setTroef(troefkaartsoort);
+//        String troefkaartsoort = troefkaart.getOldSoort();
+//        setTroef(troefkaartsoort);
+//        Kaart.setTroef(troefkaartsoort);
+//        Bot.setTroef(troefkaartsoort);
         int nrtroefkaart = troefkaart.getNummer();
         totaalHarten.setIstroef();
         totaalRuiten.setIstroef();
@@ -147,9 +147,9 @@ public class Wiezen extends Application {
 
         for (int i = 0; i < splr1.size(); i++) {
             Kaart kaart = splr1.get(i);
-            String soort = kaart.getSoort();
+//            String soort = kaart.getOldSoort();
             int nr = kaart.getNummer();
-            String location = "/" + soort + nr + ".png";
+            String location = "/" +  + nr + ".png";
             Image image = new Image(Wiezen.class.getResourceAsStream(location), 120, 180, true, true);
             //kaarten.getChildren().add(new ImageView(image));
             ImageView kaartView = new ImageView(image);

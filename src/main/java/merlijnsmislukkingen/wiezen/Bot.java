@@ -71,11 +71,11 @@ public class Bot {
     public boolean getActie() {
         for (int i = 0; i < this.splrdeck.size(); i++) {
             Kaart kaart = splrdeck.get(i);
-//            System.out.println(kaart.getSoort()+" "+ kaart.getNummer());
+//            System.out.println(kaart.getOldSoort()+" "+ kaart.getNummer());
             if (kaart.getNummer() == 14) {
                 aas++;
             }
-            if (kaart.getSoort() == detroef) {
+            if (kaart.getOldSoort() == detroef) {
                 troefamount++;
                 int troefnummer = kaart.getNummer();
                 if (troefnummer > 10) {
@@ -110,7 +110,7 @@ public class Bot {
         kaart2speler.setY(0);
         optiekaarten.clear();
         for (Kaart kaart : new ArrayList<>(splrdeck)) {
-            if (kaart.getSoort().equals(eersteKaart.getSoort())) {
+            if (kaart.getOldSoort().equals(eersteKaart.getOldSoort())) {
                 optiekaarten.add(kaart);
                 //System.out.println("deze kaart wordt toegevoegd:" +kaart.getInfo());
             }
@@ -173,7 +173,7 @@ public class Bot {
         slag.add(gelegdeKaart);
 //        System.out.println("legkaart, en nu size = "+slag.size());
         // Teken afbeelding
-        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
+        String imagePath = "/" + gelegdeKaart.getOldSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
         ImageView mid = new ImageView(gekozenImage);
 
@@ -214,7 +214,7 @@ public class Bot {
             slag.add(gelegdeKaart);
         }
         // Teken afbeelding
-        String imagePath = "/" + gelegdeKaart.getSoort() + gelegdeKaart.getNummer() + ".png";
+        String imagePath = "/" + gelegdeKaart.getOldSoort() + gelegdeKaart.getNummer() + ".png";
         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
         ImageView mid = new ImageView(gekozenImage);
 
@@ -234,7 +234,7 @@ public class Bot {
             troefamount=0;
             for (int i = 0; i<splrdeck.size(); i++) {
                 gelegdeKaart = splrdeck.get(i);
-                if (gelegdeKaart.getSoort().equals(totaalTroef.getName())) {
+                if (gelegdeKaart.getOldSoort().equals(totaalTroef.getName())) {
                     troefamount++;
                     optiekaarten.add(gelegdeKaart);
                 }
@@ -311,7 +311,7 @@ public class Bot {
     }
 // klass om fout op te sporen (later nog nuttig??)
 //        for (int i = 0; i<gelegdeKaarten.size(); i++) {
-//            System.out.println(gelegdeKaarten.get(i).getNummer()+" van " + gelegdeKaarten.get(i).getSoort());
+//            System.out.println(gelegdeKaarten.get(i).getNummer()+" van " + gelegdeKaarten.get(i).getOldSoort());
 //            System.out.println("");
 //        }
     public Kaart getLogicaLastBot(List<Kaart> slag) {
@@ -484,7 +484,7 @@ public class Bot {
         Kaart teammateKaart = teammate.getGelegdeKaart();
         for (int i=0; i<splrdeck.size(); i++) {
             Kaart kaart = splrdeck.get(i);
-            if (kaart.getSoort().equals(detroef)) {
+            if (kaart.getOldSoort().equals(detroef)) {
                 optiekaarten.add(kaart);
             }
         }

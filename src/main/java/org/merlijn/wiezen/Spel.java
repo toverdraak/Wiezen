@@ -1,9 +1,12 @@
 package org.merlijn.wiezen;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import merlijnsmislukkingen.wiezen.Kaart;
 import merlijnsmislukkingen.wiezen.Kaart.SOORT;
 
@@ -15,6 +18,9 @@ public class Spel {
 
     List<Kaart> alleKaarten;
     List<Deelnemer> spelers;
+    List<Deelnemer> vragers;
+    Kaart troefkaart;
+//    List<Kaart> alleGelegdeKaarten;
 
     public Spel() {
         System.err.println("Nieuw spel wordt gestart");
@@ -28,11 +34,12 @@ public class Spel {
         System.err.println("");
         System.err.println("");
         deelKaarten();
-        System.exit(0);
+        bepaalTroef();
         bepaalTeams();
         for (int i = 0; i < 13; i++) {
             speelRonde();
         }
+        System.exit(0);
         bepaalWinnaar();
     }
 
@@ -70,25 +77,35 @@ public class Spel {
         }
     }
 
-//    public void deelKaarten() {
-//        int r = 0;
-//        for (Deelnemer d: spelers) {
-//            int bkaart = r*13;
-//            r++;
-//            int ekaart = r*13;
-//            for (int i=bkaart; i<(ekaart); i++ ) {
-//                d.huidigeKaarten.add(alleKaarten.get(i));
-//            }
-//            System.err.println(d.huidigeKaarten);
-//            System.err.println(d.huidigeKaarten.size());
-//        }
-//    }
-    private void bepaalTeams() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void bepaalTroef() {
+        troefkaart = alleKaarten.getFirst();
+        troefkaart.setTroef(troefkaart.getSoort());
     }
 
-    private void speelRonde() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void bepaalTeams() {
+        vragers = new ArrayList<Deelnemer>();
+        for (Deelnemer d: spelers) {
+            d.setVrager(false);
+            d.setTroef(troefkaart.getSoort());
+            if (vragers.size()<2) {
+                if (d.wilVragen()) {
+                    vragers.add(d);
+                } 
+            }
+        }
+        for (Deelnemer d : vragers) {
+            d.setVrager(true);
+        }
+        System.err.println(vragers);
+    }
+
+    private Collection<Kaart> speelRonde() {
+        Map<Deelnemer, Kaart> gespeeld = new HashMap<>();
+        for (Deelnemer d: spelers) {
+            Kaart kaart =  d.uitkomen(gespeeld);
+            gespeeld.put(d, kaart);
+        }
+        return gespeeld.values();
     }
 
     private void bepaalWinnaar() {

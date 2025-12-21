@@ -19,17 +19,18 @@ public class Kaart implements Comparable<Kaart>  {
     private SOORT kaartSoort;
     private String soort;
     private int nummer;
-    private static String troef;
+    private static SOORT troef;
+    private static String oudeTroef;
     private static String uitgekomen;
 
     private static List<String> SOORT_VOLGORDE = new ArrayList();
  
-    static {
-        SOORT_VOLGORDE.add("klaveren");
-        SOORT_VOLGORDE.add("ruiten");
-        SOORT_VOLGORDE.add("harten");
-        SOORT_VOLGORDE.add("schoppen");
-    }
+//    static {
+//        SOORT_VOLGORDE.add("klaveren");
+//        SOORT_VOLGORDE.add("ruiten");
+//        SOORT_VOLGORDE.add("harten");
+//        SOORT_VOLGORDE.add("schoppen");
+//    }
     
     public Kaart(SOORT soort, int nummer) {
         this.kaartSoort = soort;
@@ -43,9 +44,16 @@ public class Kaart implements Comparable<Kaart>  {
     public String welkeKaart() {
         return soort+ "" +nummer;
     }
+
+    public static void setTroef(SOORT troef) {
+        Kaart.troef = troef;
+    }
     
-    public String getSoort() {
-        return this.soort;
+    public SOORT getSoort() {
+        return this.kaartSoort;
+    }
+    public String getOldSoort() {
+      return this.soort;
     }
     
     public int getNummer() {
@@ -53,19 +61,20 @@ public class Kaart implements Comparable<Kaart>  {
     }
     
     public static void setTroef(String soort) {
-        troef = soort;
+        oudeTroef = soort;
     }
 
     public static String getTroef() {
-        return troef;
+        return oudeTroef;
     }
     
     public String getInfo() {
-        return (this.getSoort()+this.getNummer());
+        return (this.getOldSoort()+this.getNummer());
     }
 
     boolean isTroef() {
-        return (this.soort.equals(troef));
+        return (this.kaartSoort.equals(troef));
+//        return (this.soort.equals(oudeTroef));
     }
     public static void setUitgekomenSoort(String soort) {
         uitgekomen = soort;
@@ -89,12 +98,12 @@ public class Kaart implements Comparable<Kaart>  {
         if (other.isTroef()) {
             return -1;
         }
-        if (troef.equals("harten") || troef.equals("ruiten")) {
-            SOORT_VOLGORDE.remove(troef);
+        if (oudeTroef.equals("harten") || oudeTroef.equals("ruiten")) {
+            SOORT_VOLGORDE.remove(oudeTroef);
         } else {
             SOORT_VOLGORDE.removeAll(SOORT_VOLGORDE);
             SOORT_VOLGORDE.add("harten");
-            if (troef.equals("klaveren")) {
+            if (oudeTroef.equals("klaveren")) {
                 SOORT_VOLGORDE.add("schoppen");
             } else {
                 SOORT_VOLGORDE.add("klaveren");
@@ -150,7 +159,7 @@ public class Kaart implements Comparable<Kaart>  {
     
 //    @Override
 //    public boolean equals(Object k1) {
-//        if (this.getSoort == k1.getSoort) {
+//        if (this.getOldSoort == k1.getOldSoort) {
 //            if (this.getNummer == k1.getNummer){
 //                return true;
 //            } else {
@@ -164,6 +173,6 @@ public class Kaart implements Comparable<Kaart>  {
 
     @Override
     public String toString() {
-        return "Kaart{" + "kaartSoort=" + kaartSoort + ", nummer=" + nummer + '}';
+        return kaartSoort + "," + nummer;
     }
 }

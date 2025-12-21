@@ -33,20 +33,20 @@ public class Round  {
             System.out.println("bot1 komt uit");
             bot1.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getOldSoort());
             bot2.legKaart(midden, BotGekozenKaart, slag);
             bot3.legKaart(midden, BotGekozenKaart, slag);
         } else if (bot2.getIsWinner()) {
             System.out.println("bot2 komt uit");
             bot2.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getOldSoort());
             bot3.legKaart(midden, BotGekozenKaart, slag);          
         } else if (bot3.getIsWinner()) {
             System.out.println("bot3 komt uit");
             bot3.legEersteKaart(midden, slag,totaalHarten,totaalRuiten,totaalKlaveren,totaalSchoppen);
             BotGekozenKaart = slag.get(0);
-            Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());           
+            Kaart.setUitgekomenSoort(BotGekozenKaart.getOldSoort());           
         }
         for (Node node : handView.getChildren()) {
             if (node instanceof ImageView) {
@@ -59,21 +59,21 @@ public class Round  {
                             System.out.println("speler komt uit");
                             this.gekozenKaart = spelersKaarten.get(index);
                             splr.setGelegdeKaart(gekozenKaart);
-                            Kaart.setUitgekomenSoort(gekozenKaart.getSoort());
+                            Kaart.setUitgekomenSoort(gekozenKaart.getOldSoort());
                         } else {
                             Kaart gekozen = spelersKaarten.get(index);
-                            boolean heeftSoortNog = spelersKaarten.stream().anyMatch(k -> k.getSoort().equals(BotGekozenKaart.getSoort()));
-                            if (!gekozen.getSoort().equals(BotGekozenKaart.getSoort()) && heeftSoortNog) {
+                            boolean heeftSoortNog = spelersKaarten.stream().anyMatch(k -> k.getOldSoort().equals(BotGekozenKaart.getOldSoort()));
+                            if (!gekozen.getOldSoort().equals(BotGekozenKaart.getOldSoort()) && heeftSoortNog) {
                                 // Speler speelt verkeerde kleur terwijl hij het wel heeft
                                 System.out.println("Ongeldige zet: je moet kleur volgen!");
                                 return; // Stop verwerking
                             } else {
                                 this.gekozenKaart = gekozen;
-                                Kaart.setUitgekomenSoort(BotGekozenKaart.getSoort());
+                                Kaart.setUitgekomenSoort(BotGekozenKaart.getOldSoort());
                             splr.setGelegdeKaart(gekozenKaart);
                         }
                         }
-                        String imagePath = "/" + this.gekozenKaart.getSoort() + this.gekozenKaart.getNummer() + ".png";
+                        String imagePath = "/" + this.gekozenKaart.getOldSoort() + this.gekozenKaart.getNummer() + ".png";
                         Image gekozenImage = new Image(Wiezen.class.getResourceAsStream(imagePath), 120, 180, true, true);
                         mid.setImage(gekozenImage);
                         midden.getChildren().remove(mid);

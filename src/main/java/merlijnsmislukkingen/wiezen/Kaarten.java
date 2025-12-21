@@ -50,7 +50,7 @@ public class Kaarten {
     public void updateGebruikteKaarten(List<Kaart> slag) {
         kaartenDezeSoort.removeIf(kaart ->
         slag.stream().anyMatch(slagKaart ->
-        slagKaart.getSoort().equals(this.getName()) && slagKaart.getNummer() == kaart.getNummer()));
+        slagKaart.getOldSoort().equals(this.getName()) && slagKaart.getNummer() == kaart.getNummer()));
         this.setHoogsteKaart();
         System.out.println("resterende aantal kaarten per soort:" +kaartenDezeSoort.size());
     }
@@ -68,7 +68,7 @@ public class Kaarten {
     }
     public Kaart heeftHoogste(List<Kaart> splrhand) {
         for (int i = 0; i<splrhand.size()-1;i++) {
-            if (splrhand.get(i).getSoort().equals(name)) {
+            if (splrhand.get(i).getOldSoort().equals(name)) {
                 if (splrhand.get(i).getNummer()==this.getHoogste().getNummer()) {
                     splrhand.remove(i)
 ;                   return splrhand.get(i);
