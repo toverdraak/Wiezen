@@ -39,7 +39,7 @@ public class Deelnemer {
         return false;
     }
 
-    public Kaart uitkomen(Map<Deelnemer, Kaart> gelegdeKaarten) {
+    public Kaart uitkomen(Map<Kaart, Deelnemer> gelegdeKaarten) {
         Kaart gelegdeKaart = null;
         return gelegdeKaart;
     }

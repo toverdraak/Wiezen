@@ -42,7 +42,7 @@ public class Bot extends Deelnemer {
         }
     }
     @Override
-    public Kaart uitkomen(Map<Deelnemer, Kaart> map) {
+    public Kaart uitkomen(Map<Kaart, Deelnemer> map) {
         int size = huidigeKaarten.size();
         Random random = new Random();
         int gekozen = random.nextInt(size);

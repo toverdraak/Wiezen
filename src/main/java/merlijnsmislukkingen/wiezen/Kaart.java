@@ -149,14 +149,49 @@ public class Kaart implements Comparable<Kaart>  {
             }
         }
     };
+    
+    /**
+     * Sorteer zodat de eerste kaart in de lijst de hoogste is
+     */
     public static Comparator<Kaart> nummerComparator = new Comparator<Kaart>() {
         @Override
         public int compare(Kaart k, Kaart c) {
-            return Integer.compare(k.nummer, c.nummer);
+            int cn = c.getNummer();
+            int kn = k.getNummer();
+            System.err.println(kn);
+            if (kn == 0) {
+                kn = 13;
+                System.err.println("aas");
+            }
+            if (cn == 0) {
+                cn = 13;
+            }
+            return Integer.compare(cn, kn);
         }
     };
-    
-    
+
+    public static Comparator<Kaart> slagComparator(SOORT uitgekomen, SOORT troef) {
+        return new Comparator<Kaart>() {
+            @Override
+            public int compare(Kaart k, Kaart c) {
+//                Thread.dumpStack();
+//                System.err.println("COMPARE "+k+ " and "+c);
+                SOORT ks = k.getSoort();
+                SOORT cs = c.getSoort();
+                if (ks.equals(cs)) {
+//                    System.err.println("result = "+ Integer.compare(c.nummer, k.nummer));
+                    return Integer.compare(c.nummer, k.nummer);
+                }
+//                System.err.println("ks = "+ks+", cs = "+cs+", uitgekomen = "+uitgekomen+", troef = "+ troef);
+                if (ks.equals(troef)) return -1;
+                if (cs.equals(troef)) return 1;
+                if (ks.equals(uitgekomen)) return -1;
+                if (cs.equals(uitgekomen)) return 1;
+                return ks.compareTo(cs);
+            }
+        };
+    }
+
 //    @Override
 //    public boolean equals(Object k1) {
 //        if (this.getOldSoort == k1.getOldSoort) {

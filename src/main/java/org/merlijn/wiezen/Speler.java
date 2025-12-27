@@ -25,7 +25,7 @@ public class Speler extends Deelnemer {
         }
     }
     @Override
-    public Kaart uitkomen(Map<Deelnemer, Kaart> map) {
+    public Kaart uitkomen(Map<Kaart, Deelnemer> map) {
         System.err.println("Dit ligt op tafel: "+map);
         System.err.println("kies een kaart om uit te komen");
         System.err.println(huidigeKaarten);

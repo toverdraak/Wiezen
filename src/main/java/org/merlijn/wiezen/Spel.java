@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import merlijnsmislukkingen.wiezen.Kaart;
 import merlijnsmislukkingen.wiezen.Kaart.SOORT;
 
@@ -36,8 +37,17 @@ public class Spel {
         deelKaarten();
         bepaalTroef();
         bepaalTeams();
+        int firstPlayer = 0;
         for (int i = 0; i < 13; i++) {
-            speelRonde();
+            Map<Kaart, Deelnemer> speelRonde = speelRonde(firstPlayer);
+            Kaart uitgekomen = speelRonde.keySet().iterator().next();
+            Set<Kaart> kaarten = speelRonde.keySet();
+            List<Kaart> kaartLijst = new ArrayList<>(kaarten);
+            kaartLijst.sort(Kaart.slagComparator(uitgekomen.getSoort(), troefkaart.getSoort()));
+            Kaart winnerKaart = kaartLijst.get(0);
+            Deelnemer winnaar = speelRonde.get(winnerKaart);
+            firstPlayer = spelers.indexOf(winnaar);
+            System.err.println("Ronde is gewonnen door "+ spelers.get(firstPlayer));
         }
         System.exit(0);
         bepaalWinnaar();
@@ -99,13 +109,22 @@ public class Spel {
         System.err.println(vragers);
     }
 
-    private Collection<Kaart> speelRonde() {
-        Map<Deelnemer, Kaart> gespeeld = new HashMap<>();
+    private Map<Kaart, Deelnemer> speelRonde(int firstPlayer) {
+        List<Deelnemer> spelersVolgorde = new ArrayList<>();
+        for (int i = 0; i<4; i++) {
+            int add = firstPlayer+i;
+            if (add > 3) {
+                add = add - 4;
+            }
+            spelersVolgorde.add(spelers.get(add));
+        }
+        System.err.println(spelersVolgorde);
+        Map<Kaart, Deelnemer> gespeeld = new HashMap<>();
         for (Deelnemer d: spelers) {
             Kaart kaart =  d.uitkomen(gespeeld);
-            gespeeld.put(d, kaart);
+            gespeeld.put(kaart, d);
         }
-        return gespeeld.values();
+        return gespeeld;
     }
 
     private void bepaalWinnaar() {
